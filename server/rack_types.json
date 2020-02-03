@@ -1,0 +1,17 @@
+[
+    {
+        "type": "Small Rack",
+        "max_server_capacity": 24,
+        "price": 600
+    },
+    {
+        "type": "Medium Rack",
+        "max_server_capacity": 28,
+        "price": 800
+    },
+    {
+        "type": "Large Rack",
+        "max_server_capacity": 30,
+        "price": 1200
+    }
+]

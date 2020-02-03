@@ -1,0 +1,26 @@
+[
+    {
+        "type": "Basic Rack PDU",
+
+    },
+    {
+        "type": "Basic Rack PDU 2",
+        
+    },
+    {
+        "type": "Advanced Rack PDU",
+        
+    },
+    {
+        "type": "Advanced Rack PDU 2",
+        
+    },
+    {
+        "type": "CEdge Rack PDU",
+        
+    },
+    {
+        "type": "CEdge Rack PDU 2",
+        
+    }
+]

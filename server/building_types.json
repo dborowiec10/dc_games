@@ -1,0 +1,33 @@
+[
+    {
+        "type": "Small Datacenter Building",
+        "square_metres": 1500,
+        "price": 1000000
+    },
+    {
+        "type": "Small Datacenter Building 2",
+        "square_metres": 1700,
+        "price": 1300000
+    },
+    {
+        "type": "Medium Datacenter Building",
+        "square_metres": 2300,
+        "price": 2000000
+    },
+    {
+        "type": "Medium Datacenter Building 2",
+        "square_metres": 2600,
+        "price": 2500000
+    },
+    {
+        "type": "Large Datacenter Building",
+        "square_metres": 4000,
+        "price": 4000000
+    },
+    {
+        "type": "Large Datacenter Building 2",
+        "square_metres": 6000,
+        "price": 10000000
+    }
+    
+]

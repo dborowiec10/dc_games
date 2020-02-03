@@ -1,0 +1,27 @@
+[
+    {
+        "id": "70b1e517-d7d1-411d-9406-8a6916b41a76",
+        "name": "Nimbus Cloud Solutions Ltd.",
+        "initial_balance": 2000000
+    },
+    {
+        "id": "dd760514-b87a-46f6-b79d-6f759390d6b1",
+        "name": "Alveo Networking Inc.",
+        "initial_balance": 2000000
+    },
+    {
+        "id": "deb917fd-8796-4ea1-954e-519d038f558c",
+        "name": "Prometheus Digital Inc.",
+        "initial_balance": 2000000
+    },
+    {
+        "id": "3e3613cc-531c-4138-bff7-c79b704124cd",
+        "name": "Aurora Solutions Ltd.",
+        "initial_balance": 2000000
+    },
+    {
+        "id": "a7ab4cc2-a228-4a18-a3fe-c718882bf752",
+        "name": "RayCorp Holdings Ltd.",
+        "initial_balance": 2000000
+    }
+]

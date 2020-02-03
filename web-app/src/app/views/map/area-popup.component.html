@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">
+    <b>{{name}}</b>
+  </div>
+  <div class="card-body">
+    <span><b><i class="fa fa-home"></i> Size:</b> {{sqmt}}m<sup>2</sup></span><br>
+    <span *ngIf="status === 'purchased'"><b><i class="fa fa-user"></i> Owner:</b> {{owner}}<br></span>
+    <span><b><i class="fa fa-thermometer"></i> Avg. Temp.:</b> {{average_temperature}}&#8451;</span><br>
+    <span><b><i class="fa fa-dollar"></i> Price:</b>{{price | number}} D$</span><br>
+    <span><b><i class="fa fa-check"></i> Status:</b>
+      <span *ngIf="status === 'unpurchased'" class="badge badge-success">{{status}}</span>
+      <span *ngIf="status === 'purchased'" class="badge badge-warning">{{status}}</span>
+    </span>
+  </div>
+  <div class="card-footer">
+    <button *ngIf="status === 'purchased'" class="btn btn-sm btn-primary" disabled type="button">Show in Marketplace</button>
+    <button *ngIf="status === 'unpurchased'" class="btn btn-sm btn-primary" (click)="showInMarketplace()" type="button">Show in Marketplace</button>
+  </div>
+</div>
+

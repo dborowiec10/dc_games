@@ -1,0 +1,56 @@
+[
+    {
+        "id": "de1b90dc-fe08-40ff-b011-57b7c72a83b9",
+        "name": "Game Master",
+        "role": "Game Master",
+        "username": "admin",
+        "password": "gamemaster123",
+        "company_id": "none",
+        "is_admin": true
+    },
+    {
+        "id": "48df8cba-8cbf-4683-a5e5-9c5e3e24cec7",
+        "name": "Joanne Smith",
+        "role": "Datacenter Operations Manager",
+        "username": "joanne_smith_56",
+        "password": "abcdefg123",
+        "company_id": "70b1e517-d7d1-411d-9406-8a6916b41a76",
+        "is_admin": false
+    },
+    {
+        "id": "eef97168-aee1-439c-9c02-7d55971a5300",
+        "name": "John Frank",
+        "role": "Datacenter Operations Manager",
+        "username": "john_frank_80",
+        "password": "abcdefg123",
+        "company_id": "dd760514-b87a-46f6-b79d-6f759390d6b1",
+        "is_admin": false
+    },
+    {
+        "id": "e031d94e-95e8-4efd-9f54-8d7d091bfc31",
+        "name": "Jessica Harper",
+        "role": "Datacenter Operations Manager",
+        "username": "jessica_harper_90",
+        "password": "abcdefg123",
+        "company_id": "deb917fd-8796-4ea1-954e-519d038f558c",
+        "is_admin": false
+    },
+    {
+        "id": "8701198e-c495-4b10-ba74-a10fc32cc3b6",
+        "name": "Andrew Bates",
+        "role": "Datacenter Operations Manager",
+        "username": "andrew_bates_10",
+        "password": "abcdefg123",
+        "company_id": "3e3613cc-531c-4138-bff7-c79b704124cd",
+        "is_admin": false
+    },
+    {
+        "id": "69de601c-a198-4d93-8d07-fa4e7f1b1e91",
+        "name": "Mark Wallace",
+        "role": "Datacenter Operations Manager",
+        "username": "mark_wallace_30",
+        "password": "abcdefg123",
+        "company_id": "a7ab4cc2-a228-4a18-a3fe-c718882bf752",
+        "is_admin": false
+    }
+]
