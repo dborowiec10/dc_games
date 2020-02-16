@@ -6,6 +6,7 @@ import {environment} from '../environments/environment';
 import * as moment from 'moment';
 import * as jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
+import { SocketService } from './socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,9 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router) {}
+    private router: Router,
+    private sock: SocketService
+  ) {}
 
   private set_session(result) {
     const expiresAt = moment.unix(result['data']['expires_at']);

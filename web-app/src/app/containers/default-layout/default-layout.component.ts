@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { navItems } from '../../_nav';
 import { AuthService } from '../../auth.service';
 import { ApiService } from '../../api.service';
+import { SocketService } from '../../socket.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ export class DefaultLayoutComponent implements OnInit {
   public sidebarMinimized = false;
   public navItems = navItems;
   public currentUser = null;
+  public currentDatetime = null;
 
   is(thing){
     if(thing){
@@ -22,7 +24,8 @@ export class DefaultLayoutComponent implements OnInit {
 
   constructor(
     private auth_service: AuthService,
-    private api_svc: ApiService
+    private api_svc: ApiService,
+    private socket_service: SocketService
   ) {}
 
   logout(){
@@ -32,6 +35,10 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(){
     this.auth_service.getUser().subscribe(res => {
       this.currentUser = res['user'];
+    });
+
+    this.socket_service.getDatetime().subscribe((message) => {
+      this.currentDatetime = message["datetime"];
     });
   }
 }

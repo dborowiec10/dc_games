@@ -39,6 +39,7 @@ import { FormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { AuthInterceptor } from './auth-interceptor';
 import { ActivatorService } from './activator-service';
+import { SocketService } from './socket.service';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { ActivatorService } from './activator-service';
     },
     ApiService,
     AuthService,
-    ActivatorService
+    ActivatorService,
+    SocketService
   ],
   bootstrap: [ AppComponent ]
 })

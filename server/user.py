@@ -8,6 +8,7 @@ class User(object):
         self.company_id = company_id,
         self.is_admin = is_admin
         self.jwt = None
+        self.async_session = None
 
     def serialize(self):
         print(self.company_id)

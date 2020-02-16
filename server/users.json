@@ -4,7 +4,7 @@
         "name": "Game Master",
         "role": "Game Master",
         "username": "admin",
-        "password": "gamemaster123",
+        "password": "admin",
         "company_id": "none",
         "is_admin": true
     },
