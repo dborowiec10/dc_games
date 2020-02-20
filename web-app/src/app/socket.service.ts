@@ -21,12 +21,4 @@ export class SocketService {
         })
     }
 
-    public join(user_id){
-        this.socket.emit("join", user_id);
-    }
-
-    public leave(user_id){
-        this.socket.emit("leave", user_id);
-    }
-
 }

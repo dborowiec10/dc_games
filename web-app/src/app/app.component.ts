@@ -19,15 +19,9 @@ export class AppComponent implements OnInit, OnDestroy {
       }
       window.scrollTo(0, 0);
     });
-    this.auth_service.getUser().subscribe((res) => {
-      this.sock.join(res["user"]["id"]);
-    })
   }
 
   ngOnDestroy(){
-    this.auth_service.getUser().subscribe((res) => {
-      this.sock.leave(res["user"]["id"]);
-    })
   }
 
 
