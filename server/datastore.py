@@ -62,3 +62,9 @@ def find_user_by_username(username):
         if u.username == username:
             return u
     return None
+
+def find_user_by_session_id(id):
+    for u in users:
+        if u.async_session == id:
+            return u
+    return None

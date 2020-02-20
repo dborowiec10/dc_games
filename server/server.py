@@ -27,12 +27,15 @@ socketio_listeners = {
 
 @socketio.on('connect')
 def connect():
-    for i in socketio_listeners['connect']:
-        i()
+    user = datastore.find_user_by_id(request.args["uid"])
+    if user:
+        user.async_session = request.sid
 
-def add_connect_listener(method):
-    socketio_listeners['connect'].append(method)
-
+@socketio.on('disconnect')
+def disconnect():
+    user = datastore.find_user_by_session_id(request.sid)
+    if user:
+        user.async_session = None
 
 def send_message(channel, message, broadcast=False):
     socketio.emit(channel, message, broadcast=broadcast)

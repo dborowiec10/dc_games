@@ -3,6 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, NavigationEnd, Router, RouterStateS
 import {Observable} from 'rxjs';
 import {AuthService} from './auth.service';
 import { filter } from 'rxjs/operators';
+import { SocketService } from './socket.service';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +19,7 @@ export class ActivatorService implements CanActivate {
      */
     constructor(
         private authService: AuthService,
+        private sock: SocketService,
         private router: Router
     ) {
 
@@ -44,9 +46,15 @@ export class ActivatorService implements CanActivate {
             }
             return true;
         } else if (this.authService.isLoggedOut()) {
+            this.sock.disconnect();
             this.router.navigate(['login'], {queryParams: {pr: state.url}});
             return true;
         } else {
+          if(!this.sock.isConnected()){
+            this.authService.getUser().subscribe((res) => {
+              this.sock.connect(res["user"]["id"]);
+            });
+          }
           return true;
         }
     }

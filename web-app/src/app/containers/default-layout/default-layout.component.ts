@@ -3,6 +3,7 @@ import { navItems } from '../../_nav';
 import { AuthService } from '../../auth.service';
 import { ApiService } from '../../api.service';
 import { SocketService } from '../../socket.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +26,8 @@ export class DefaultLayoutComponent implements OnInit {
   constructor(
     private auth_service: AuthService,
     private api_svc: ApiService,
-    private socket_service: SocketService
+    private socket_service: SocketService,
+    private toast: ToastrService
   ) {}
 
   logout(){
@@ -35,10 +37,13 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(){
     this.auth_service.getUser().subscribe(res => {
       this.currentUser = res['user'];
+      this.socket_service.registerIdObserver(this.currentUser["id"], (msg) => {
+        this.toast.success("Hello world!", "Toastr Fun!");
+      });
     });
 
-    this.socket_service.getDatetime().subscribe((message) => {
-      this.currentDatetime = message["datetime"];
+    this.socket_service.registerObserver("datetime", (data) => {
+      this.currentDatetime = data["datetime"];
     });
   }
 }

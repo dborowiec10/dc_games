@@ -40,6 +40,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { AuthInterceptor } from './auth-interceptor';
 import { ActivatorService } from './activator-service';
 import { SocketService } from './socket.service';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { SocketService } from './socket.service';
     AlertModule.forRoot(),
     ChartsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot()
   ],
   declarations: [
     AppComponent,
