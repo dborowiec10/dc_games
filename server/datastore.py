@@ -5,6 +5,7 @@ from entities.user import User
 from entities.area import Area
 from entities.datacenter_building import DatacenterBuilding
 
+config = {}
 areas = []
 building_types = []
 rack_types = []
@@ -12,11 +13,22 @@ rack_switch_types = []
 users = []
 companies = []
 
+def conf(key):
+    return config[key]
+
+# loads game configuration file
+def load_config():
+    global config
+    with open('config.json') as json_file:
+        config = json.load(json_file)
+
+
 # loads entity definitions
 def load_entities():
     global building_types
     global rack_types
     global rack_switch_types
+    global config
 
     # load areas
     with open('definitions/areas.json') as json_file:
@@ -36,7 +48,10 @@ def load_entities():
     with open('definitions/companies.json') as json_file:
         cmp = json.load(json_file)
         for c in cmp:
-            companies.append(Company(c['id'], c['name'], c['initial_balance']))
+            company = Company(c['id'], c['name'], c['initial_balance'])
+    
+            companies.append(company)
+
     # load users
     with open('definitions/users.json') as json_file:
         usrs = json.load(json_file)
@@ -45,7 +60,16 @@ def load_entities():
             for c in companies:
                 if c.id == usr.company_id[0]:
                     c.manager_id = usr.id
+                    usr.company = c
             users.append(usr)
+
+
+# given an id, get the company object
+def find_company_by_id(_id):
+    for c in companies:
+        if c.id == _id:
+            return c
+    return None
 
 
 # given an id, get the user object

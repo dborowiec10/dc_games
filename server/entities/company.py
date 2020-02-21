@@ -6,6 +6,14 @@ class Company(object):
         self.name = name
         self.balance = init_balance
         self.manager_id = None
+        self.inventory = {
+            "areas": [],
+            "buildings": [],
+            "racks": [],
+            "rack_switches": [],
+            "rack_pdus": [],
+            "servers": []
+        }
 
     def serialize(self):
         return {

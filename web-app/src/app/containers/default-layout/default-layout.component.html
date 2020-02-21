@@ -5,9 +5,27 @@
   [navbarBrandFull]="{src: 'assets/img/brand/logo.png', width: 120, height: 40, alt: 'DC_GAMES logo'}"
   [sidebarToggler]="'lg'">
   <ul class="nav navbar-nav ml-auto">
-    <li>
-      <p>{{currentDatetime}}</p>
+    <li class="nav-item" *ngIf="currentDatetime">
+      <div class="topbar-info topbar-info-green">
+        <i class="fa fa-calendar"></i> &nbsp;{{currentDatetime}}
+      </div>
     </li>
+    <li class="nav-item" *ngIf="currentCompany">
+      <div class="topbar-info topbar-info-blue">
+        <i class="fa fa-money"></i> &nbsp;Balance: {{currentCompany['balance'] | number}} D$
+      </div>
+    </li>
+    <li class="nav-item" *ngIf="currentCompany">
+      <div class="topbar-info topbar-info-purple">
+        <i class="fa fa-building"></i> &nbsp;Company: {{currentCompany['name']}}
+      </div>
+    </li>
+    <li class="nav-item" *ngIf="currentUser">
+      <div class="topbar-info topbar-info-grey">
+        <i class="fa fa-user"></i> &nbsp;Player: {{currentUser['name']}}
+      </div>
+    </li>
+    
     <li *ngIf="currentUser" class="nav-item dropdown" dropdown placement="bottom right">
       <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
         <img src="assets/img/avatars/1.png" class="img-avatar" alt="admin@bootstrapmaster.com"/>

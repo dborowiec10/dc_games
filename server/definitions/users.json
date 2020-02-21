@@ -12,8 +12,8 @@
         "id": "48df8cba-8cbf-4683-a5e5-9c5e3e24cec7",
         "name": "Joanne Smith",
         "role": "Datacenter Operations Manager",
-        "username": "joanne_smith_56",
-        "password": "abcdefg123",
+        "username": "user",
+        "password": "user",
         "company_id": "70b1e517-d7d1-411d-9406-8a6916b41a76",
         "is_admin": false
     },

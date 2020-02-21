@@ -1,0 +1,20 @@
+{
+    "MAX_TICKS": 540,
+    "TICK_TIME": 5,
+    "INITIAL_BUILDING": {
+        "type": "Small Datacenter Building",
+        "count": 1
+    },
+    "INITIAL_RACKS": {
+        "type": "Small Rack",
+        "count": 1
+    },
+    "INITIAL_RACK_SWITCH": {
+        "type": "Basic Rack Switch",
+        "count": 1
+    },
+    "INITIAL_RACK_PDU": {
+        "type": "Basic Rack PDU",
+        "count": 1
+    }
+}

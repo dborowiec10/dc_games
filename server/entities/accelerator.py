@@ -26,7 +26,7 @@ class BasicAccelerator(Accelerator):
 
 
 class Accelerator(object):
-        def __init__(self, server_id, _type, max_capacity, max_temp, max_power_usage):
+    def __init__(self, server_id, _type, max_capacity, max_temp, max_power_usage):
         self.id = uuid.uuid4()
         self.server_id = server_id
         self.type = _type

@@ -7,12 +7,14 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './default-layout.component.html'
+  templateUrl: './default-layout.component.html',
+  styleUrls: ['./default-layout.component.css']
 })
 export class DefaultLayoutComponent implements OnInit {
   public sidebarMinimized = false;
   public navItems = navItems;
   public currentUser = null;
+  public currentCompany = null;
   public currentDatetime = null;
 
   is(thing){
@@ -37,8 +39,10 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(){
     this.auth_service.getUser().subscribe(res => {
       this.currentUser = res['user'];
+      this.currentCompany = this.currentUser['company'];
+      console.log(this.currentCompany);
       this.socket_service.registerIdObserver(this.currentUser["id"], (msg) => {
-        this.toast.success("Hello world!", "Toastr Fun!");
+        // this.toast.success("Hello world!", "Toastr Fun!");
       });
     });
 

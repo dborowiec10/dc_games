@@ -1,49 +1,79 @@
 <div class="animated fadeIn">
 
   <div class="row">
-    <div class="col-sm-12 col-md-12">
+    <div class="col-sm-8 col-md-8">
       <div id="map" leaflet [leafletOptions]="options">
         <div *ngFor="let a of areas" [leafletLayer]="a['layer']"></div>
       </div>
     </div>
-  </div>
-  <br>
-  <div class="row">
-    <div class="col-sm-12 col-md-12">
-      <div class="card" style="overflow: hidden;">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Areas
-        </div>
-        <div class="card-body" style="max-height: 200px; overflow-y:scroll; overflow-x: hidden; display: block;">
+    <div class="col-sm-4 col-md-4">
+
+
+      <div class="animated fadeIn">
+        <div class="card" style="margin: 0;">
+          <div class="card-header" style="padding: 2px;">
+            <button type="button" class="btn btn-block btn-square btn-secondary" (click)="isCollapsed['areas'] = !isCollapsed['areas']">Areas</button>
+          </div>
+          <div
+            class="card-body"
+            style="padding: 0;"
+            (collapsed)="collapsed($event, 'areas')"
+            (expanded)="expanded($event, 'areas')"
+            [collapse]="isCollapsed['areas']"
+            >
           <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody >
-                <tr *ngFor="let a of areas">
-                  <td>{{a['area']['name']}}</td>
-                  <td>{{a['area']['status']}}</td>
+            <tbody 
+              style="
+                border-top: solid thin grey;
+                max-height: 200px; 
+                overflow-y: scroll; 
+                overflow-x: hidden; 
+                display: block;
+                width: 100%;
+              ">
+                <tr *ngFor="let a of areas" style="display:table; width:100%; table-layout:fixed;">
+                  <td colspan="2"><small>{{a['area']['name']}}</small></td>
+                  <td><small>{{a['area']['status']}}</small></td>
                   <td><button type="button" (click)="viewArea(a)" class="btn btn-success btn-sm"><span class="cui-magnifying-glass"></span>Show</button></td>
                 </tr>
             </tbody>
-
           </table>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-sm-12 col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Datacenters
+
+      <div class="animated fadeIn">
+        <div class="card" style="margin: 0;">
+          <div class="card-header" style="padding: 2px;">
+            <button type="button" class="btn btn-block btn-square btn-secondary" (click)="isCollapsed['datacenters'] = !isCollapsed['datacenters']">Datacenters</button>
+          </div>
+          <div
+            class="card-body"
+            style="padding: 0;"
+            (collapsed)="collapsed($event, 'datacenters')"
+            (expanded)="expanded($event, 'datacenters')"
+            [collapse]="isCollapsed['datacenters']"
+            >
+          <table class="table table-striped table-sm">
+            <tbody 
+              style="
+                border-top: solid thin grey;
+                max-height: 200px; 
+                overflow-y: scroll; 
+                overflow-x: hidden; 
+                display: block;
+                width: 100%;
+              ">
+                <tr *ngFor="let a of areas" style="display:table; width:100%; table-layout:fixed;">
+                  <td colspan="2"><small>{{a['area']['name']}}</small></td>
+                  <td><small>{{a['area']['status']}}</small></td>
+                  <td><button type="button" (click)="viewArea(a)" class="btn btn-success btn-sm"><span class="cui-magnifying-glass"></span>Show</button></td>
+                </tr>
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-
-
 </div>

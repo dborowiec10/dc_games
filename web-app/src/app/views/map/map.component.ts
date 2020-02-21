@@ -36,6 +36,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     private _activRoute: ActivatedRoute
   ) {}
 
+  isCollapsed = {
+    "areas": true,
+    "datacenters": true
+  };
+
+  collapsed(event: any, tab: string): void {}
+
+  expanded(event: any, tab: string): void {}
 
   viewArea(area) {
     this.map.fitBounds(area['layer'].getBounds());

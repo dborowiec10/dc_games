@@ -1,0 +1,31 @@
+.topbar-info {
+    padding: 7px;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.topbar-info-green {
+    background-color: darkgreen;
+    color: white;
+}
+
+.topbar-info-blue {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.topbar-info-red {
+    background-color: maroon;
+    color: white;
+}
+
+.topbar-info-purple {
+    background-color: rebeccapurple;
+    color: white;
+}
+
+.topbar-info-grey {
+    background-color: slategray;
+    color: white;
+}
