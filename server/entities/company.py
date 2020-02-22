@@ -14,6 +14,7 @@ class Company(object):
             "rack_pdus": [],
             "servers": []
         }
+        self.datacenters = []
 
     def serialize(self):
         return {

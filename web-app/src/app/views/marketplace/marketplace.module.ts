@@ -7,6 +7,8 @@ import { MarketplaceComponent } from './marketplace.component';
 import { MarketplaceRoutingModule } from './marketplace-routing.module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { VarDirective } from '../../ng-var.directive';
+
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     CommonModule
   ],
   declarations: [
-    MarketplaceComponent
+    MarketplaceComponent,
+    VarDirective
   ]
 })
 export class MarketplaceModule { }

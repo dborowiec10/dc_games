@@ -1,0 +1,26 @@
+[
+    {
+        "type": "AeroMaster-Lite",
+        "heat_rejection_ability": 1000,
+        "max_power_usage": 30,
+        "price": 100
+    },
+    {
+        "type": "AeroMaster-Aqua",
+        "heat_rejection_ability": 1200,
+        "max_power_usage": 30,
+        "price": 250
+    },
+    {
+        "type": "AeroMaster-Windforce",
+        "heat_rejection_ability": 1600,
+        "max_power_usage": 25,
+        "price": 300
+    },
+    {
+        "type": "AeroMaster-Nimbus",
+        "heat_rejection_ability": 2000,
+        "max_power_usage": 30,
+        "price": 350
+    }
+]

@@ -1,26 +1,30 @@
 [
     {
-        "type": "Basic Rack PDU",
-
+        "type": "Volta1000-A",
+        "max_power_supply": 24000,
+        "max_power_loss": 0.1,
+        "max_temp": 60,
+        "price": 1000
     },
     {
-        "type": "Basic Rack PDU 2",
-        
+        "type": "Volta1000-A-Green",
+        "max_power_supply": 34000,
+        "max_power_loss": 0.075,
+        "max_temp": 55,
+        "price": 1500
     },
     {
-        "type": "Advanced Rack PDU",
-        
+        "type": "Volta2000-B-Aero",
+        "max_power_supply": 45000,
+        "max_power_loss": 0.1,
+        "max_temp": 50,
+        "price": 1700
     },
     {
-        "type": "Advanced Rack PDU 2",
-        
-    },
-    {
-        "type": "CEdge Rack PDU",
-        
-    },
-    {
-        "type": "CEdge Rack PDU 2",
-        
+        "type": "Volta-XS",
+        "max_power_supply": 60000,
+        "max_power_loss": 0.075,
+        "max_temp": 60,
+        "price": 2000
     }
 ]

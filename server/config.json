@@ -1,6 +1,6 @@
 {
-    "MAX_TICKS": 540,
-    "TICK_TIME": 5,
+    "MAX_TICKS": 1000,
+    "TICK_TIME": 3,
     "INITIAL_BUILDING": {
         "type": "Small Datacenter Building",
         "count": 1

@@ -1,0 +1,73 @@
+[
+    {
+        "type": "Tektronix-Alpha",
+        "max_cpus": 2,
+        "max_memory": 2,
+        "max_accelerators": 0,
+        "cpus": {
+            "type": "Core1000-X",
+            "count": 2
+        },
+        "memory": {
+            "type": "Neuron10",
+            "count": 2
+        },
+        "psu": {
+            "type": "Volta1-A"
+        },
+        "cooling": {
+            "type": "AeroMaster-Lite"
+        },
+        "base_power_usage": 50,
+        "base_price": 300
+    },
+    {
+        "type": "Tektronix-Beta",
+        "max_cpus": 2,
+        "max_memory": 4,
+        "max_accelerators": 0,
+        "cpus": {
+            "type": "Core2000-Y",
+            "count": 2
+        },
+        "memory": {
+            "type": "Neuron10",
+            "count": 4
+        },
+        "psu": {
+            "type": "Volta1-A-Green"
+        },
+        "cooling": {
+            "type": "AeroMaster-Lite"
+        },
+        "base_power_usage": 60,
+        "base_price": 350
+    },
+    {
+        "type": "Tektronix-Gamma",
+        "max_cpus": 2,
+        "max_memory": 4,
+        "max_accelerators": 2,
+        "cpus": {
+            "type": "Core4000-Z",
+            "count": 2
+        },
+        "memory": {
+            "type": "Neuron20",
+            "count": 4
+        },
+        "psu": {
+            "type": "Volta1-A-Green"
+        },
+        "cooling": {
+            "type": "AeroMaster-Aqua"
+        },
+        "accelerators": {
+            "type": "TegraX100",
+            "count": 2
+        },
+        "base_power_usage": 60,
+        "base_price": 400
+    }
+    
+]

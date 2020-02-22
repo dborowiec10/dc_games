@@ -2,14 +2,21 @@ import json
 
 from entities.company import Company
 from entities.user import User
-from entities.area import Area
-from entities.datacenter_building import DatacenterBuilding
+from entities.infrastructure.area import Area
+from entities.infrastructure.datacenter_building import DatacenterBuilding
 
 config = {}
 areas = []
 building_types = []
 rack_types = []
 rack_switch_types = []
+rack_pdu_types = []
+cpu_types = []
+memory_types = []
+accelerator_types = []
+psu_types = []
+server_cooling_types = []
+server_types = []
 users = []
 companies = []
 
@@ -25,16 +32,27 @@ def load_config():
 
 # loads entity definitions
 def load_entities():
+    global areas
     global building_types
     global rack_types
     global rack_switch_types
+    global rack_pdu_types
     global config
+    global cpu_types
+    global memory_types
+    global accelerator_types
+    global psu_types
+    global server_cooling_types
+    global server_types
+    global users
+    global companies
 
     # load areas
     with open('definitions/areas.json') as json_file:
         ars = json.load(json_file)
         for a in ars:
             areas.append(Area(a['id'], a['name'], a['coordinates'], a['sqmt'], a['avg_temp'], a['price']))
+
     # load building types
     with open('definitions/building_types.json') as json_file:
         building_types = json.load(json_file)
@@ -44,6 +62,28 @@ def load_entities():
     # load rack switch types
     with open('definitions/rack_switch_types.json') as json_file:
         rack_switch_types = json.load(json_file)
+    # load rack pdus
+    with open('definitions/rack_pdu_types.json') as json_file:
+        rack_pdu_types = json.load(json_file)
+    # load cpu types
+    with open('definitions/cpu_types.json') as json_file:
+        cpu_types = json.load(json_file)
+    # load memory types
+    with open('definitions/memory_types.json') as json_file:
+        memory_types = json.load(json_file)
+    # load accelerator types
+    with open('definitions/accelerator_types.json') as json_file:
+        accelerator_types = json.load(json_file)
+    # load psu types
+    with open('definitions/psu_types.json') as json_file:
+        psu_types = json.load(json_file)
+    # load server cooling types
+    with open('definitions/server_cooling_types.json') as json_file:
+        server_cooling_types = json.load(json_file)
+    # load server types
+    with open('definitions/server_types.json') as json_file:
+        server_types = json.load(json_file)
+
     # load companies
     with open('definitions/companies.json') as json_file:
         cmp = json.load(json_file)
@@ -51,7 +91,6 @@ def load_entities():
             company = Company(c['id'], c['name'], c['initial_balance'])
     
             companies.append(company)
-
     # load users
     with open('definitions/users.json') as json_file:
         usrs = json.load(json_file)

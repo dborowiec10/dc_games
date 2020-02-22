@@ -38,6 +38,33 @@ export class ApiService {
     return this.http.get(environment.apiEndpoint + '/rack_switch_types', {});
   }
 
+  rack_pdu_types(): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/rack_pdu_types', {});
+  }
+
+  accelerator_types(): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/accelerator_types', {});
+  }
+
+  cpu_types(): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/cpu_types', {});
+  }
+
+  memory_types(): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/memory_types', {});
+  }
+
+  psu_types(): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/psu_types', {});
+  }
+
+  server_cooling_types(): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/server_cooling_types', {});
+  }
+
+  server_types(): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/server_types', {});
+  }
 
   companies(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/companies', {});

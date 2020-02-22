@@ -1,34 +1,34 @@
 [
     {
-        "type": "Basic Rack Switch",
+        "type": "Comspec-1",
         "max_power_usage": 60,
         "max_temperature": 70,
         "max_throughput": 4000000000,
         "price": 4000
     },
     {
-        "type": "Basic Rack Switch 2",
+        "type": "Comspec-2",
         "max_power_usage": 55,
         "max_temperature": 65,
         "max_throughput": 40000000000,
         "price": 6000
     },
     {
-        "type": "Fast Rack Switch",
+        "type": "P3-Altro",
         "max_power_usage": 70,
         "max_temperature": 75,
         "max_throughput": 80000000000,
         "price": 10000
     },
     {
-        "type": "Fast Rack Switch 2",
+        "type": "P4-Altro",
         "max_power_usage": 70,
         "max_temperature": 80,
         "max_throughput": 100000000000,
         "price": 16000
     },
     {
-        "type": "Switched Fabric Rack Switch",
+        "type": "Fabric-Switch-X",
         "max_power_usage": 65,
         "max_temperature": 65,
         "max_throughput": 160000000000,

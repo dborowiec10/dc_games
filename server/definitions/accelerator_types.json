@@ -1,0 +1,23 @@
+[
+    {
+        "type": "TegraX100",
+        "flops": 300000000000,
+        "max_temp": 105,
+        "max_power_usage": 250,
+        "price": 1500
+    },
+    {
+        "type": "TegraZ500",
+        "flops": 400000000000,
+        "max_temp": 100,
+        "max_power_usage": 260,
+        "price": 2500
+    },
+    {
+        "type": "TegraTitan1000",
+        "flops": 500000000000,
+        "max_temp": 110,
+        "max_power_usage": 280,
+        "price": 4000
+    }
+]

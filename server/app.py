@@ -23,7 +23,7 @@ def game_loop():
 
         time.sleep(datastore.conf("TICK_TIME"))
         current_tick = current_tick + 1
-        current_datetime = current_datetime + timedelta(days=7)
+        current_datetime = current_datetime + timedelta(days=1)
 
 # app entrypoint
 if __name__ == '__main__':

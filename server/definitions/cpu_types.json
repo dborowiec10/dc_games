@@ -1,0 +1,95 @@
+[
+    {
+        "type": "Core1000-X",
+        "cores": 1,
+        "max_freq": 1500,
+        "max_temp": 90,
+        "max_power_usage": 200,
+        "flops": 10000000000,
+        "price": 200
+    },
+    {
+        "type": "Core2000-Y",
+        "cores": 2,
+        "max_freq": 2000,
+        "max_temp": 95,
+        "max_power_usage": 190,
+        "flops": 30000000000,
+        "price": 300
+    },
+    {
+        "type": "Core4000-Z",
+        "cores": 4,
+        "max_freq": 3000,
+        "max_temp": 100,
+        "max_power_usage": 180,
+        "flops": 50000000000,
+        "price": 400
+    },
+    {
+        "type": "Optimus10-AX",
+        "cores": 6,
+        "max_freq": 3000,
+        "max_temp": 105,
+        "max_power_usage": 190,
+        "flops": 60000000000,
+        "price": 500
+    },
+    {
+        "type": "Optimus20-BY-Green",
+        "cores": 8,
+        "max_freq": 3000,
+        "max_temp": 95,
+        "max_power_usage": 160,
+        "flops": 40000000000,
+        "price": 700
+    },
+    {
+        "type": "Storm900-A-Red",
+        "cores": 12,
+        "max_freq": 4000,
+        "max_temp": 110,
+        "max_power_usage": 180,
+        "flops": 70000000000,
+        "price": 650
+    },
+    {
+        "type": "Storm1000-B-Black",
+        "cores": 24,
+        "max_freq": 4000,
+        "max_temp": 110,
+        "max_power_usage": 170,
+        "flops": 100000000000,
+        "price": 800
+    },
+    {
+        "type": "Storm5000-C-Green",
+        "cores": 24,
+        "max_freq": 4000,
+        "max_temp": 100,
+        "max_power_usage": 130,
+        "flops": 80000000000,
+        "price": 1000
+    },
+    {
+        "type": "StormX-Z-Omni",
+        "cores": 48,
+        "max_freq": 4000,
+        "max_temp": 100,
+        "max_power_usage": 150,
+        "flops": 150000000000,
+        "price": 1200
+    }
+]
+
+
+
+
+
+
+
+
+
+
+
+

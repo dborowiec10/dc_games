@@ -1,28 +1,6 @@
 import uuid
 
-class HighMemory2(Memory):
-    def __init__(self, server_id):
-        super(Memory, server_id, "high2", 512000, 75, 10)
 
-class HighMemory(Memory):
-    def __init__(self, server_id):
-        super(Memory, server_id, "high", 128000, 70, 10)
-
-class MedMemory2(Memory):
-    def __init__(self, server_id):
-        super(Memory, server_id, "med2", 32000, 70, 10)
-
-class MedMemory(Memory):
-    def __init__(self, server_id):
-        super(Memory, server_id, "med", 16000, 65, 15)
-
-class BasicMemory2(Memory):
-    def __init__(self, server_id):
-        super(Memory, server_id, "basic2", 8000, 60, 15)
-
-class BasicMemory(Memory):
-    def __init__(self, server_id):
-        super(Memory, server_id, "basic", 4000, 65, 20)
 
 
 class Memory(object):

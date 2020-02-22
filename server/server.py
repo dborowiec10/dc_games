@@ -164,6 +164,79 @@ def get_rack_switch_types():
         return jsonify(rack_switch_types=datastore.rack_switch_types), 200
 
 
+# endpoint for retrieving rack pdu types
+@app.route('/rack_pdu_types', methods=['GET'])
+@cross_origin()
+def get_rack_pdu_types():
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        return jsonify(rack_pdu_types=datastore.rack_pdu_types), 200
+
+# endpoint for retrieving accelerator types
+@app.route('/accelerator_types', methods=['GET'])
+@cross_origin()
+def get_accelerator_types():
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        return jsonify(accelerator_types=datastore.accelerator_types), 200
+
+# endpoint for retrieving cpu types
+@app.route('/cpu_types', methods=['GET'])
+@cross_origin()
+def get_cpu_types():
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        return jsonify(cpu_types=datastore.cpu_types), 200
+
+# endpoint for retrieving memory types
+@app.route('/memory_types', methods=['GET'])
+@cross_origin()
+def get_memory_types():
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        return jsonify(memory_types=datastore.memory_types), 200
+
+
+# endpoint for retrieving psu types
+@app.route('/psu_types', methods=['GET'])
+@cross_origin()
+def get_psu_types():
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        return jsonify(psu_types=datastore.psu_types), 200
+
+# endpoint for retrieving server cooling types
+@app.route('/server_cooling_types', methods=['GET'])
+@cross_origin()
+def get_server_cooling_types():
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        return jsonify(server_cooling_types=datastore.server_cooling_types), 200
+
+
+# endpoint for retrieving server types
+@app.route('/server_types', methods=['GET'])
+@cross_origin()
+def get_server_types():
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        return jsonify(server_types=datastore.server_types), 200
+        
+
 # endpoint for retrieving companies
 @app.route('/companies', methods=['GET'])
 @cross_origin()

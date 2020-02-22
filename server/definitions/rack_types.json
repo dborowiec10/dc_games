@@ -1,17 +1,57 @@
 [
     {
-        "type": "Small Rack",
+        "type": "Maven-1",
         "max_server_capacity": 24,
-        "price": 600
+        "rack_switch": {
+            "type": "Comspec-1"
+        },
+        "rack_pdu": {
+            "type": "Volta1000-A"
+        },
+        "base_price": 2000
     },
     {
-        "type": "Medium Rack",
+        "type": "Maven-1-A",
+        "max_server_capacity": 24,
+        "rack_switch": {
+            "type": "Comspec-2"
+        },
+        "rack_pdu": {
+            "type": "Volta1000-A-Green"
+        },
+        "base_price": 2000
+    },
+    {
+        "type": "Maven-2",
         "max_server_capacity": 28,
-        "price": 800
+        "rack_switch": {
+            "type": "P3-Altro"
+        },
+        "rack_pdu": {
+            "type": "Volta1000-A-Green"
+        },
+        "base_price": 4000
     },
     {
-        "type": "Large Rack",
+        "type": "Maven-2-A",
+        "max_server_capacity": 28,
+        "rack_switch": {
+            "type": "P4-Altro"
+        },
+        "rack_pdu": {
+            "type": "Volta2000-B-Aero"
+        },
+        "base_price": 4000
+    },
+    {
+        "type": "Storinator-2000",
         "max_server_capacity": 30,
-        "price": 1200
+        "rack_switch": {
+            "type": "Fabric-Switch-X"
+        },
+        "rack_pdu": {
+            "type": "Volta-XS"
+        },
+        "base_price": 5000
     }
 ]

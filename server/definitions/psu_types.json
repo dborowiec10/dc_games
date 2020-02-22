@@ -1,0 +1,30 @@
+[
+    {
+        "type": "Volta1-A",
+        "max_power_supply": 1000,
+        "max_power_loss": 0.2,
+        "max_temp": 60,
+        "price": 100
+    },
+    {
+        "type": "Volta1-A-Green",
+        "max_power_supply": 1200,
+        "max_power_loss": 0.1,
+        "max_temp": 55,
+        "price": 150
+    },
+    {
+        "type": "Volta2-B-Aero",
+        "max_power_supply": 1500,
+        "max_power_loss": 0.15,
+        "max_temp": 50,
+        "price": 170
+    },
+    {
+        "type": "Volta-X",
+        "max_power_supply": 2000,
+        "max_power_loss": 0.1,
+        "max_temp": 60,
+        "price": 200
+    }
+]

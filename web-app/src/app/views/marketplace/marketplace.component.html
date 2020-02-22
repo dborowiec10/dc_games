@@ -40,6 +40,7 @@
               <thead>
                 <tr>
                   <th>Type</th>
+                  <th>Max Racks</th>
                   <th>Sq. Metres</th>
                   <th>Price</th>
                   <th>Actions</th>
@@ -48,6 +49,7 @@
               <tbody >
                   <tr *ngFor="let b of buildings">
                     <td>{{b['type']}}</td>
+                    <td>{{b['max_racks']}}</td>
                     <td>{{b['square_metres']}}m<sup>2</sup></td>
                     <td>{{b['price'] | number}} D$</td>
                     <td>
@@ -64,67 +66,194 @@
         <ng-template tabHeading><i class="icon-pie-chart"></i> Racks</ng-template>
         <div class="card">
           <div class="card-body">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Max Server Capacity</th>
-                  <th>Price</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody >
-                  <tr *ngFor="let r of racks">
-                    <td>{{r['type']}}</td>
-                    <td>{{r['max_server_capacity']}}</td>
-                    <td>{{r['price'] | number}} D$</td>
-                    <td>
-                      <button type="button" (click)="rackDetailsView(r)" class="btn btn-info btn-sm"><span class=""></span> Details</button>
-                      <button type="button" (click)="rackPurchaseView(r)" class="btn btn-warning btn-sm"><span class=""></span> Purchase</button>
-                    </td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </tab>
+            <tabset #tabsRacks>
+              <tab *ngFor="let r of rack_types">
+                <ng-template tabHeading><b>{{r['type']}}</b></ng-template>
+                <div class="row">
+                  <div class="col-4">
+                    <h5>Base Information</h5>
+                    <hr>
+                    <h6><b>Max Server Capacity:</b> {{r['max_server_capacity']}}</h6>
+                    <h6><b>Base price:</b> {{r['base_price'] | number}} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="rack_pdu_by_type(r['rack_pdu']['type']) as rack_pdu">
+                    <h5>Rack PDU (Power Distribution Unit)</h5>
+                    <hr>
+                    <h6 *ngIf="rack_pdu"><b>Type:</b> {{rack_pdu['type']}}</h6>
+                    <h6 *ngIf="rack_pdu"><b>Max Power Supply:</b> {{rack_pdu['max_power_supply'] | number}} Watts</h6>
+                    <h6 *ngIf="rack_pdu"><b>Max Power Loss:</b> {{rack_pdu['max_power_loss']}} / 1</h6>
+                    <h6 *ngIf="rack_pdu"><b>Max Operating Temperature:</b> {{rack_pdu['max_temp']}}&#8451;</h6>
+                    <h6 *ngIf="rack_pdu"><b>Price:</b> {{rack_pdu['price'] | number}} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="rack_switch_by_type(r['rack_switch']['type']) as rack_switch">
+                    <h5>Rack Switch (Networking Equipment)</h5>
+                    <hr>
+                    <h6 *ngIf="rack_switch"><b>Type:</b> {{rack_switch['type']}}</h6>
+                    <h6 *ngIf="rack_switch"><b>Max Power Usage:</b> {{rack_switch['max_power_usage'] | number}} Watts</h6>
+                    <h6 *ngIf="rack_switch"><b>Max Throughput:</b> {{rack_switch['max_throughput'] | number}} DLOPS</h6>
+                    <h6 *ngIf="rack_switch"><b>Max Operating Temperature:</b> {{rack_switch['max_temperature']}}&#8451;</h6>
+                    <h6 *ngIf="rack_switch"><b>Price:</b> {{rack_switch['price'] | number}} D$</h6>
+                  </div>
+                </div>
+                <hr>
+                <hr>
+                <div class="row">
+                  <div class="col-4" *ngVar="{rs: rack_switch_by_type(r['rack_switch']['type']), rp: rack_pdu_by_type(r['rack_pdu']['type'])} as pack">
+                    <h5>Summary Information:</h5>
+                    <hr>
+                    <h6 *ngIf="pack"><b>Max Server Capacity:</b> {{r['max_server_capacity']}}</h6>
+                    <h6 *ngIf="pack"><b>Base Max Power Usage:</b> {{(pack['rp']['max_power_supply'] * pack['rp']['max_power_loss']) + pack['rs']['max_power_usage'] | number}} Watts</h6>
+                    <h6 *ngIf="pack"><b>Base Max Temperature:</b> {{math.max(pack['rp']['max_temp'], pack['rs']['max_temperature'])}}&#8451;</h6>
+                    <h6 *ngIf="pack"><b>Max Power Supply:</b> {{pack['rp']['max_power_supply'] | number}} Watts</h6>
+                    <h6 *ngIf="pack"><b>Max Networking Throughput:</b> {{pack['rs']['max_throughput'] | number}} DLOPS</h6>
+                    <h6 *ngIf="pack"><b>Total Price:</b> {{r['base_price'] + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="{rs: rack_switch_by_type(r['rack_switch']['type']), rp: rack_pdu_by_type(r['rack_pdu']['type'])} as pack">
+                    <h5>Purchase:</h5>
+                    <hr>
+                    <h6 *ngIf="pack"><b>Single Unit Price:</b> {{r['base_price'] + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                    <form>
+                      <div class="form-group">
+                        <label for="rackSelect1"><b>Quantity:</b></label>
+                        <select class="form-control form-control-sm" id="rackSelect1" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                          <option>100</option>
+                        </select>
+                      </div>
+                      <hr>
+                      <h6 *ngIf="pack"><b>Total Price:</b> {{(r['base_price'] + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
+                      <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
+                      <button type="submit" (click)="purchaseRack(r, selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
+                    </form>
+                  </div>
+                </div>
+              </tab>
+              <tab *ngIf="custom_rack_done">
+                <ng-template tabHeading>Custom</ng-template>
 
-      <tab>
-        <ng-template tabHeading><i class="icon-pie-chart"></i> Racks Switches</ng-template>
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Max Power Usage</th>
-                  <th>Max Temperature</th>
-                  <th>Max Throughput</th>
-                  <th>Price</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody >
-                  <tr *ngFor="let r of rack_switches">
-                    <td>{{r['type']}}</td>
-                    <td>{{r['max_power_usage']}}</td>
-                    <td>{{r['max_temperature']}}</td>
-                    <td>{{r['max_throughput']}}</td>
-                    <td>{{r['price'] | number}} D$</td>
-                    <td>
-                      <button type="button" (click)="rackSwitchDetailsView(r)" class="btn btn-info btn-sm"><span class=""></span> Details</button>
-                      <button type="button" (click)="rackSwitchPurchaseView(r)" class="btn btn-warning btn-sm"><span class=""></span> Purchase</button>
-                    </td>
-                  </tr>
-              </tbody>
-            </table>
+                <div class="row">
+                  <div class="col-4">
+                    <h5>Base Information</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group">
+                        <label for="serverCapacitySelect"><b>Max Server Capacity:</b></label>
+                        <select class="form-control form-control-sm" id="serverCapacitySelect" [(ngModel)]="custom_rack_max_server_capacity" [ngModelOptions]="{standalone: true}">
+                          <option>20</option>
+                          <option>22</option>
+                          <option>24</option>
+                          <option>26</option>
+                          <option>28</option>
+                          <option>30</option>
+                          <option>32</option>
+                        </select>
+                      </div>
+                    </form>
+                    <h6 *ngIf="custom_rack_max_server_capacity"><b>Base price:</b> {{500 + (custom_rack_max_server_capacity * 150) | number}} D$</h6>
+                  </div>
+                  <div class="col-4">
+                    <h5>Rack PDU (Power Distribution Unit)</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group">
+                        <label for="rackPduTypeSelect"><b>Type:</b></label>
+                        <select class="form-control form-control-sm" id="rackPduTypeSelect" [(ngModel)]="custom_rack_rack_pdu" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let rp of rack_pdu_types" [value]="rp['type']">{{rp['type']}}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="custom_rack_rack_pdu">
+                        <div *ngVar="rack_pdu_by_type(custom_rack_rack_pdu) as rack_pdu">
+                          <h6 *ngIf="custom_rack_rack_pdu"><b>Max Power Supply:</b> {{rack_pdu['max_power_supply'] | number}} Watts</h6>
+                          <h6 *ngIf="custom_rack_rack_pdu"><b>Max Power Loss:</b> {{rack_pdu['max_power_loss']}} / 1</h6>
+                          <h6 *ngIf="custom_rack_rack_pdu"><b>Max Operating Temperature:</b> {{rack_pdu['max_temp']}}&#8451;</h6>
+                          <h6 *ngIf="custom_rack_rack_pdu"><b>Price:</b> {{rack_pdu['price'] | number}} D$</h6>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-4">
+                    <h5>Rack Switch (Networking Equipment)</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group">
+                        <label for="rackSwitchTypeSelect"><b>Type:</b></label>
+                        <select class="form-control form-control-sm" id="rackSwitchTypeSelect" [(ngModel)]="custom_rack_rack_switch" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let rs of rack_switch_types" [value]="rs['type']">{{rs['type']}}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="custom_rack_rack_switch">
+                        <div *ngVar="rack_switch_by_type(custom_rack_rack_switch) as rack_switch">
+                          <h6 *ngIf="custom_rack_rack_switch"><b>Max Power Usage:</b> {{rack_switch['max_power_usage'] | number}} Watts</h6>
+                          <h6 *ngIf="custom_rack_rack_switch"><b>Max Throughput:</b> {{rack_switch['max_throughput'] | number}} DLOPS</h6>
+                          <h6 *ngIf="custom_rack_rack_switch"><b>Max Operating Temperature:</b> {{rack_switch['max_temperature']}}&#8451;</h6>
+                          <h6 *ngIf="custom_rack_rack_switch"><b>Price:</b> {{rack_switch['price'] | number}} D$</h6>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <hr>
+                <hr>
+                <div class="row">
+                  <div class="col-4" *ngVar="{rs: rack_switch_by_type(custom_rack_rack_switch), rp: rack_pdu_by_type(custom_rack_rack_pdu)} as pack">
+                    <h5>Summary Information:</h5>
+                    <hr>
+                    <h6 *ngIf="pack"><b>Max Server Capacity:</b> {{custom_rack_max_server_capacity}}</h6>
+                    <h6 *ngIf="pack"><b>Base Max Power Usage:</b> {{(pack['rp']['max_power_supply'] * pack['rp']['max_power_loss']) + pack['rs']['max_power_usage'] | number}} Watts</h6>
+                    <h6 *ngIf="pack"><b>Base Max Temperature:</b> {{math.max(pack['rp']['max_temp'], pack['rs']['max_temperature'])}}&#8451;</h6>
+                    <h6 *ngIf="pack"><b>Max Power Supply:</b> {{pack['rp']['max_power_supply'] | number}} Watts</h6>
+                    <h6 *ngIf="pack"><b>Max Networking Throughput:</b> {{pack['rs']['max_throughput'] | number}} DLOPS</h6>
+                    <h6 *ngIf="pack"><b>Total Price:</b> {{(500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="{rs: rack_switch_by_type(custom_rack_rack_switch), rp: rack_pdu_by_type(custom_rack_rack_pdu)} as pack">
+                    <h5>Purchase:</h5>
+                    <hr>
+                    <h6 *ngIf="pack && custom_rack_max_server_capacity"><b>Single Unit Price:</b> {{(500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                    <form>
+                      <div class="form-group">
+                        <label for="rackCustomSelect"><b>Quantity:</b></label>
+                        <select class="form-control form-control-sm" id="rackCustomSelect" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                          <option>100</option>
+                        </select>
+                      </div>
+                      <hr>
+                      <h6 *ngIf="pack && custom_rack_max_server_capacity"><b>Total Price:</b> {{((500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
+                      <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
+                      <button type="submit" (click)="purchaseRack('custom', selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
+                    </form>
+                  </div>
+                </div>
+              </tab>
+            </tabset>
           </div>
         </div>
       </tab>
 
       <tab>
         <ng-template tabHeading><i class="icon-pie-chart"></i> Servers</ng-template>
-
+        <div class="card">
+          <div class="card-body">
+            <tabset #tabsServers>
+              <tab *ngFor="let s of server_types">
+                <ng-template tabHeading>{{s['type']}}</ng-template>
+              </tab>
+              <tab *ngIf="custom_server_done">
+                <ng-template tabHeading>Custom</ng-template>
+              </tab>
+            </tabset>
+          </div>
+        </div>
       </tab>
     </tabset>
   </div>
@@ -195,11 +324,8 @@
           <div class="col-md-6">
             <h4>Details:</h4>
             <span><b><i class="fa fa-home"></i> Size:</b> {{current_building['square_metres']}}m<sup>2</sup></span><br>
+            <span><b><i class="fa fa-home"></i> Max Racks:</b> {{current_building['max_racks']}}</span><br>
             <span><b><i class="fa fa-dollar"></i> Price:</b> {{current_building['price'] | number}} D$</span><br>
-          </div>
-          <div class="col-md-6">
-
-
           </div>
         </div>
       </div>
@@ -230,111 +356,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-<div *ngIf="current_rack !== null"  bsModal #rack_details_modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><b>{{current_rack['type']}}</b></h4>
-        <button type="button" class="close" (click)="rack_details_modal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <h4>Details:</h4>
-            <span><b><i class="fa fa-home"></i> Size:</b> {{current_rack['square_metres']}}m<sup>2</sup></span><br>
-            <span><b><i class="fa fa-dollar"></i> Price:</b> {{current_rack['price'] | number}} D$</span><br>
-          </div>
-          <div class="col-md-6">
-
-
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="rack_details_modal.hide()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="current_rack !== null"  bsModal #rack_purchase_modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-warning" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><b>Purchase: </b>{{current_rack['type']}}</h4>
-        <button type="button" class="close" (click)="rack_purchase_modal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <b>You are about to purchase the rack:</b> <i>{{current_rack['type']}}</i>!<br>
-        <b>Price:</b> {{current_rack['price'] | number}} D$
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="rack_purchase_modal.hide()">Close</button>
-        <button type="button" class="btn btn-warning">Purchase</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-<div *ngIf="current_rack_switch !== null"  bsModal #rack_switch_details_modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><b>{{current_rack_switch['type']}}</b></h4>
-        <button type="button" class="close" (click)="rack_switch_details_modal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <h4>Details:</h4>
-            <span><b><i class="fa fa-dollar"></i> Price:</b> {{current_rack_switch['price'] | number}} D$</span><br>
-          </div>
-          <div class="col-md-6">
-
-
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="rack_switch_details_modal.hide()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="current_rack_switch !== null"  bsModal #rack_switch_purchase_modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-warning" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><b>Purchase: </b>{{current_rack_switch['type']}}</h4>
-        <button type="button" class="close" (click)="rack_switch_purchase_modal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <b>You are about to purchase the rack switch:</b> <i>{{current_rack_switch['type']}}</i>!<br>
-        <b>Price:</b> {{current_rack_switch['price'] | number}} D$
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="rack_switch_purchase_modal.hide()">Close</button>
-        <button type="button" class="btn btn-warning">Purchase</button>
-      </div>
-    </div>
-  </div>
-</div>
-

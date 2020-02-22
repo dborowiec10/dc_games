@@ -2,31 +2,37 @@
     {
         "type": "Small Datacenter Building",
         "square_metres": 1500,
+        "max_racks": 30,
         "price": 1000000
     },
     {
         "type": "Small Datacenter Building 2",
         "square_metres": 1700,
+        "max_racks": 50,
         "price": 1300000
     },
     {
         "type": "Medium Datacenter Building",
         "square_metres": 2300,
+        "max_racks": 100,
         "price": 2000000
     },
     {
         "type": "Medium Datacenter Building 2",
         "square_metres": 2600,
+        "max_racks": 150,
         "price": 2500000
     },
     {
         "type": "Large Datacenter Building",
         "square_metres": 4000,
+        "max_racks": 300,
         "price": 4000000
     },
     {
         "type": "Large Datacenter Building 2",
         "square_metres": 6000,
+        "max_racks": 500,
         "price": 10000000
     }
     

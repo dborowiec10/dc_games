@@ -15,19 +15,33 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
     private _router: Router,
     private _activRoute: ActivatedRoute
   ){}
-
+  
+  public math = Math;
   public areas = [];
   public buildings = [];
-  public racks = [];
-  public rack_switches = [];
+  public rack_types = [];
+  public rack_switch_types = [];
+  public rack_pdu_types = [];
+  public accelerator_types = [];
+  public cpu_types = [];
+  public memory_types = [];
+  public psu_types = [];
+  public server_cooling_types = [];
+  public server_types = [];
 
+  public selected_quantity = 1;
+  public custom_rack_max_server_capacity = 20;
+  public custom_rack_rack_pdu = null;
+  public custom_rack_rack_switch = null;
+  
   private tab_id = 'areas';
   private other_id = null;
 
   public current_area = null;
   public current_building = null;
-  public current_rack = null;
-  public current_rack_switch = null;
+
+  public custom_rack_done = false;
+  public custom_server_done = false;
 
   @ViewChild('tabs') tabs;
   @ViewChild('area_details_modal') public area_details_modal: ModalDirective;
@@ -35,12 +49,6 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild('building_details_modal') public building_details_modal: ModalDirective;
   @ViewChild('building_purchase_modal') public building_purchase_modal: ModalDirective;
-
-  @ViewChild('rack_details_modal') public rack_details_modal: ModalDirective;
-  @ViewChild('rack_purchase_modal') public rack_purchase_modal: ModalDirective;
-
-  @ViewChild('rack_switch_details_modal') public rack_switch_details_modal: ModalDirective;
-  @ViewChild('rack_switch_purchase_modal') public rack_switch_purchase_modal: ModalDirective;
 
   viewArea(a) {
     this._router.navigate(['map/area', a['id']]);
@@ -78,36 +86,22 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
     })();
   }
 
-  rackDetailsView(r){
-    this.current_rack = r;
-    (async () => {
-      await new Promise( resolve => setTimeout(resolve, 100) );
-      this.rack_details_modal.show();
-    })();
+  rack_pdu_by_type(type: string): object {
+    for(let rt of this.rack_pdu_types){
+      if(rt['type'] === type){
+        return rt;
+      }
+    }
+    return null;
   }
 
-  rackPurchaseView(r){
-    this.current_rack = r;
-    (async () => {
-      await new Promise( resolve => setTimeout(resolve, 100) );
-      this.rack_purchase_modal.show();
-    })();
-  }
-
-  rackSwitchDetailsView(r){
-    this.current_rack_switch = r;
-    (async () => {
-      await new Promise( resolve => setTimeout(resolve, 100) );
-      this.rack_switch_details_modal.show();
-    })();
-  }
-
-  rackSwitchPurchaseView(r){
-    this.current_rack_switch = r;
-    (async () => {
-      await new Promise( resolve => setTimeout(resolve, 100) );
-      this.rack_switch_purchase_modal.show();
-    })();
+  rack_switch_by_type(type: string): object {
+    for(let rt of this.rack_switch_types){
+      if(rt['type'] === type){
+        return rt;
+      }
+    }
+    return null;
   }
 
   ngAfterViewInit() {
@@ -125,12 +119,21 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
         this.tabs.tabs[1].active = true;
       } else if(this.tab_id === 'racks') {
         this.tabs.tabs[2].active = true;
-      } else if(this.tab_id === 'rack_switches') {
-        this.tabs.tabs[3].active = true;
       } else if(this.tab_id === 'servers') {
         this.tabs.tabs[3].active = true;
       }
     })();
+  }
+
+  purchaseRack(rack_type: any, quantity: number){
+    if(rack_type === "custom"){
+      console.log(this.custom_rack_rack_pdu);
+      console.log(this.custom_rack_rack_switch);
+      console.log(this.custom_rack_max_server_capacity);
+    } else {
+      console.log(rack_type);
+    }
+    console.log(quantity);
   }
 
   ngOnInit() {
@@ -155,13 +158,44 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
       this.buildings = res['buildings'];
     });
 
-    this._apiSvc.rack_types().subscribe((res) => {
-      this.racks = res['rack_types'];
+    this._apiSvc.rack_switch_types().subscribe((res) => {
+      this.rack_switch_types = res['rack_switch_types'];
+      this.custom_rack_rack_switch = this.rack_switch_types[0]['type'];
     });
 
-    this._apiSvc.rack_switch_types().subscribe((res) => {
-      this.rack_switches = res['rack_switch_types'];
+    this._apiSvc.rack_pdu_types().subscribe((res) => {
+      this.rack_pdu_types = res['rack_pdu_types'];
+      this.custom_rack_rack_pdu = this.rack_pdu_types[0]['type'];
+    });
+
+    this._apiSvc.rack_types().subscribe((res) => {
+      this.rack_types = res['rack_types'];
+      this.custom_rack_done = true;
+    });
+
+    this._apiSvc.accelerator_types().subscribe((res) => {
+      this.accelerator_types = res['accelerator_types'];
+    });
+
+    this._apiSvc.cpu_types().subscribe((res) => {
+      this.cpu_types = res['cpu_types'];
+    });
+
+    this._apiSvc.memory_types().subscribe((res) => {
+      this.memory_types = res['memory_types'];
+    });
+
+    this._apiSvc.psu_types().subscribe((res) => {
+      this.psu_types = res['psu_types'];
+    });
+
+    this._apiSvc.server_cooling_types().subscribe((res) => {
+      this.server_cooling_types = res['server_cooling_types'];
+    });
+
+    this._apiSvc.server_types().subscribe((res) => {
+      this.server_types = res['server_types'];
+      this.custom_server_done = true;
     });
   }
-
 }
