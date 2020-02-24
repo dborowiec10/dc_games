@@ -1,10 +1,7 @@
 import uuid
 
-
-
-
 class Memory(object):
-        def __init__(self, server_id, _type, max_capacity, max_temp, max_power_usage):
+    def __init__(self, server_id, _type, max_capacity, max_temp, max_power_usage):
         self.id = uuid.uuid4()
         self.server_id = server_id
         self.type = _type
@@ -25,5 +22,5 @@ class Memory(object):
             "max_temperature": self.max_temperature,
             "temperature": self.temperature,
             "max_power_usage": self.max_power_usage,
-            "power_usage": self.power_usage
+            "power_usage": self.pow_usage
         }

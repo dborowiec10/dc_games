@@ -39,6 +39,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { AuthInterceptor } from './auth-interceptor';
 import { ActivatorService } from './activator-service';
 import { SocketService } from './socket.service';
+import { StateUpdateService } from './state-update.service';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -78,7 +79,8 @@ import { ToastrModule } from 'ngx-toastr';
     ApiService,
     AuthService,
     ActivatorService,
-    SocketService
+    SocketService,
+    StateUpdateService
   ],
   bootstrap: [ AppComponent ]
 })

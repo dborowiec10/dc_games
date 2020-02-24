@@ -6,15 +6,7 @@ class DatacenterBuilding(object):
         self.name = name
         self.type = _type
         self.sqmt = sqmt
-        self.price = price
         self.area = None
-        self.racks = {}
-
-    def add_rack(self, rack, id):
-        self.racks[id] = rack
-
-    def remove_rack(self, id):
-        self.racks.pop(id, None)
 
     def serialize(self):
         return {

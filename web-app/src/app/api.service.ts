@@ -82,4 +82,19 @@ export class ApiService {
     return this.http.get(environment.apiEndpoint + '/users/' + id, {});
   }
 
+  buy_area(area_id: string): Observable<any> {
+    return this.http.post(environment.apiEndpoint + '/areas', {
+      id: area_id
+    });
+  }
+
+  buy_rack(type: any, quantity: number): Observable<any> {
+    return this.http.post(environment.apiEndpoint + '/racks', {
+      type: type,
+      quantity: quantity
+    });
+  }
+
+
+
 }

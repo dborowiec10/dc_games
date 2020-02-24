@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ApiService } from '../../api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+import { StateUpdateService } from '../../state-update.service';
 
 @Component({
   selector: 'app-marketplace',
@@ -13,10 +15,13 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
   constructor(
     private _apiSvc: ApiService,
     private _router: Router,
-    private _activRoute: ActivatedRoute
+    private _activRoute: ActivatedRoute,
+    private toast: ToastrService,
+    private state: StateUpdateService
   ){}
   
   public math = Math;
+
   public areas = [];
   public buildings = [];
   public rack_types = [];
@@ -125,15 +130,55 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
     })();
   }
 
+  purchaseArea(area: any){
+    console.log(area)
+    this._apiSvc.buy_area(area["id"]).subscribe((res) => {
+      this.state.update.next(true);
+      if(res["data"]["success"]){
+        this.toast.success(res["data"]["success"], "Purchase Successful!", {
+          timeOut: 8000
+        });
+      } else {
+        this.toast.error(res["data"]["error"], "Purchase Unsuccessful!", {
+          timeOut: 8000
+        });
+      }
+    })
+    this.area_purchase_modal.hide();
+  }
+
+  purchaseBuilding(building_type: any){
+    console.log(building_type);
+    this.building_purchase_modal.hide();
+  }
+
   purchaseRack(rack_type: any, quantity: number){
+    let type = {}
     if(rack_type === "custom"){
-      console.log(this.custom_rack_rack_pdu);
-      console.log(this.custom_rack_rack_switch);
-      console.log(this.custom_rack_max_server_capacity);
+      type["type"] = "custom";
+      type["rack_pdu"] = {
+        type: this.custom_rack_rack_pdu
+      };
+      type["rack_switch"] = {
+        type: this.custom_rack_rack_switch
+      };
+      type["max_server_capacity"] = this.custom_rack_max_server_capacity
+      type["base_price"] = 500 + (this.custom_rack_max_server_capacity * 150);
     } else {
-      console.log(rack_type);
+      type = rack_type;
     }
-    console.log(quantity);
+    this._apiSvc.buy_rack(type, quantity).subscribe((res) => {
+      this.state.update.next(true);
+      if(res["data"]["success"]){
+        this.toast.success(res["data"]["success"], "Purchase Successful!", {
+          timeOut: 8000
+        });
+      } else {
+        this.toast.error(res["data"]["error"], "Purchase Unsuccessful!", {
+          timeOut: 8000
+        });
+      }
+    });
   }
 
   ngOnInit() {

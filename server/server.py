@@ -10,6 +10,7 @@ from jwt import (
     jwk_from_pem,
 )
 import datastore
+import marketplace
 
 
 app = Flask(__name__)
@@ -284,4 +285,40 @@ def get_user(id):
         for u in datastore.users:
             if u.id == id:
                 return jsonify(user=u.serialize()), 200
-        return jsonify(data={"error": "User not found!"}), 200  
+        return jsonify(data={"error": "User not found!"}), 200 
+
+
+# endpoint for buying racks
+@app.route('/racks', methods=['POST'])
+@cross_origin()
+def buy_rack():
+    data = json.loads(request.data)
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    elif data == None:
+        return jsonify(data={"error": "Bad Request!"}), 400
+    else:
+        res, error = marketplace.buy_rack(user, data["type"], data["quantity"])
+        if error != None:
+            return jsonify(data={"error": error})
+        else:
+            return jsonify(data={"success": res}), 200
+
+
+# endpoint for buying areas
+@app.route('/areas', methods=['POST'])
+@cross_origin()
+def buy_area():
+    data = json.loads(request.data)
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    elif data == None:
+        return jsonify(data={"error": "Bad Request!"}), 400
+    else:
+        res, error = marketplace.buy_area(user, data["id"])
+        if error != None:
+            return jsonify(data={"error": error})
+        else:
+            return jsonify(data={"success": res}), 200

@@ -8,6 +8,7 @@ class Area(object):
         self.price = price
         self.owner_id = None
         self.status = "unpurchased"
+        self.buildings = []
         
 
     def serialize(self):

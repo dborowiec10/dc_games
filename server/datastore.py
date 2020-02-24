@@ -20,6 +20,11 @@ server_types = []
 users = []
 companies = []
 
+racks = []
+rack_switches = []
+rack_pdus = []
+
+# return config value by key
 def conf(key):
     return config[key]
 
@@ -102,6 +107,34 @@ def load_entities():
                     usr.company = c
             users.append(usr)
 
+            
+# given id, return area
+def find_area_by_id(_id):
+    for a in areas:
+        if a['id'] == _id:
+            return a
+    return None
+
+# given rack type name, return rack type
+def find_rack_type(_type):
+    for r in rack_types:
+        if r['type'] == _type:
+            return r
+    return None
+
+# given rack pdu type name, return rack pdu type
+def find_rack_pdu_type(_type):
+    for r in rack_pdu_types:
+        if r['type'] == _type:
+            return r
+    return None
+
+# given rack switch type name, return rack switch type
+def find_rack_switch_type(_type):
+    for r in rack_switch_types:
+        if r['type'] == _type:
+            return r
+    return None
 
 # given an id, get the company object
 def find_company_by_id(_id):
@@ -126,8 +159,22 @@ def find_user_by_username(username):
             return u
     return None
 
+
+# given a socketio session id, find user
 def find_user_by_session_id(id):
     for u in users:
         if u.async_session == id:
             return u
     return None
+
+# given a rack, inserts it to the store
+def add_rack(rack):
+    racks.append(rack)
+
+# given a rack pdu, inserts it to the store
+def add_rack_pdu(rack_pdu):
+    rack_pdus.append(rack_pdu)
+
+# given a rack_switch, inserts it to the store
+def add_rack_switch(rack_switch):
+    rack_switches.append(rack_switch)

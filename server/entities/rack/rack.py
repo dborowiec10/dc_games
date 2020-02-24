@@ -1,11 +1,13 @@
 import uuid
 
 class Rack(object):
-    def __init__(self, datacenter_id, max_server_capacity, price):
+    def __init__(self, _type, max_server_capacity, rack_pdu, rack_switch):
         self.id = uuid.uuid4()
-        self.datacenter_id = datacenter_id
+        self.type = _type
         self.max_server_capacity = max_server_capacity
-        self.price = price
+        self.rack_pdu = rack_pdu
+        self.rack_switch = rack_switch
+        self.datacenter_id = None
         self.servers = []
 
     def serialize(self):
@@ -13,6 +15,7 @@ class Rack(object):
             "id": self.id,
             "datacenter_id": self.datacenter_id,
             "max_server_capacity": self.max_server_capacity,
-            "price": self.price,
-            "server_capacity": len(self.servers)
+            "server_capacity": len(self.servers),
+            "rack_pdu": self.rack_pdu.serialize(),
+            "rack_switch": self.rack_switch.serialize()
         }
