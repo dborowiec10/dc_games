@@ -1,20 +1,20 @@
 import uuid
 
 class DatacenterBuilding(object):
-    def __init__(self, name, _type, sqmt, price):
+    def __init__(self, _type, sqmt, max_racks):
         self.id = uuid.uuid4()
-        self.name = name
         self.type = _type
         self.sqmt = sqmt
+        self.max_racks = max_racks
+        self.racks = []
         self.area = None
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
             "type": self.type,
             "square_metres": self.sqmt,
-            "area_id": self.area,
-            "price": self.price,
-            "racks": map(lambda r: r.serialize(), self.racks.values())
+            "max_racks": self.max_racks,
+            "racks": map(lambda r: r.serialize(), self.racks.values()),
+            "area": self.area
         }

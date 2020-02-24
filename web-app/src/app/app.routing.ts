@@ -60,6 +60,11 @@ export const routes: Routes = [
         loadChildren: () => import('./views/marketplace/marketplace.module').then(m => m.MarketplaceModule)
       },
       {
+        path: 'inventory',
+        canActivate: [ActivatorService],
+        loadChildren: () => import('./views/inventory/inventory.module').then(m => m.InventoryModule)
+      },
+      {
         path: 'datacenters',
         canActivate: [ActivatorService],
         loadChildren: () => import('./views/datacenters/datacenters.module').then(m => m.DatacentersModule)

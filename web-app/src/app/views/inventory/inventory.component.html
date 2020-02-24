@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-12 mb-4">
+    <tabset #tabs>
+      <tab>
+        <ng-template tabHeading><i class="icon-calculator"></i> Areas</ng-template>
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Avg. Temp.</th>
+                  <th>Sq. Metres</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody >
+                  <tr *ngFor="let a of areas" [id]="a['id']" tabindex="0">
+                    <td>{{a['name']}}</td>
+                    <td>{{a['average_temperature']}}&#8451;</td>
+                    <td>{{a['square_metres']}}m<sup>2</sup></td>
+                    <td>
+                      <button type="button" (click)="viewArea(a)" class="btn btn-success btn-sm"><span class="cui-magnifying-glass"></span> Map</button>
+                      <button type="button" (click)="areaDetailsView(a)" class="btn btn-info btn-sm"><span class=""></span> Details</button>
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </tab>
+
+      <tab>
+        <ng-template tabHeading><i class="icon-calculator"></i> Buildings</ng-template>
+
+      </tab>
+
+      <tab>
+        <ng-template tabHeading><i class="icon-calculator"></i> Racks</ng-template>
+
+      </tab>
+
+      <tab>
+        <ng-template tabHeading><i class="icon-calculator"></i> Servers</ng-template>
+
+      </tab>
+
+    </tabset>
+  </div>
+</div>

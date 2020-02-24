@@ -132,6 +132,22 @@ def get_areas():
         return jsonify(areas=[a.serialize() for a in datastore.areas]), 200
 
 
+# endpoint for retrieving areas owned by specific company
+@app.route('/areas/company/<id>', methods=['GET'])
+@cross_origin()
+def get_areas_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            areas = comp.get_areas()
+            return jsonify(areas=[a.serialize() for a in areas]), 200
+
+
 # endpoint for retrieving building types
 @app.route('/building_types', methods=['GET'])
 @cross_origin()
@@ -322,3 +338,70 @@ def buy_area():
             return jsonify(data={"error": error})
         else:
             return jsonify(data={"success": res}), 200
+
+
+# endpoint for buying buildings
+@app.route('/buildings', methods=['POST'])
+@cross_origin()
+def buy_building():
+    data = json.loads(request.data)
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    elif data == None:
+        return jsonify(data={"error": "Bad Request!"}), 400
+    else:
+        res, error = marketplace.buy_building(user, data["type"])
+        if error != None:
+            return jsonify(data={"error": error})
+        else:
+            return jsonify(data={"success": res}), 200
+
+
+# endpoint for retrieving buildings owned by specific company
+@app.route('/buildings/company/<id>', methods=['GET'])
+@cross_origin()
+def get_buildings_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            buildings = comp.get_buildings()
+            return jsonify(areas=[b.serialize() for b in buildings]), 200
+
+
+# endpoint for retrieving racks owned by specific company
+@app.route('/racks/company/<id>', methods=['GET'])
+@cross_origin()
+def get_racks_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            racks = comp.get_racks()
+            return jsonify(areas=[r.serialize() for r in racks]), 200
+
+
+# endpoint for retrieving servers owned by specific company
+@app.route('/servers/company/<id>', methods=['GET'])
+@cross_origin()
+def get_servers_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            servers = comp.get_servers()
+            return jsonify(areas=[s.serialize() for s in servers]), 200
+

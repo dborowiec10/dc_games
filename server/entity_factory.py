@@ -13,6 +13,10 @@ from entities.server.psu import Psu
 from entities.server.server_cooling import ServerCooling
 from entities.server.server import Server
 
+# generates building from blueprint
+def get_building(_type):
+    return DatacenterBuilding(_type["type"], _type["square_metres"], _type["max_racks"]);
+
 # generates rack pdu object from blueprint
 def gen_rack_pdu(_type):
     return RackPdu(_type["type"], _type["max_power_supply"], _type["max_power_loss"], _type["max_temp"])

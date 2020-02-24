@@ -128,6 +128,7 @@
                       <hr>
                       <h6 *ngIf="pack"><b>Total Price:</b> {{(r['base_price'] + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
                       <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
+                      <br>
                       <button type="submit" (click)="purchaseRack(r, selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
                     </form>
                   </div>
@@ -230,6 +231,7 @@
                       <hr>
                       <h6 *ngIf="pack && custom_rack_max_server_capacity"><b>Total Price:</b> {{((500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
                       <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
+                      <br>
                       <button type="submit" (click)="purchaseRack('custom', selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
                     </form>
                   </div>

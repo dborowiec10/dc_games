@@ -26,12 +26,24 @@ export class ApiService {
     return this.http.get(environment.apiEndpoint + '/areas', {});
   }
 
+  areas_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/areas/company/' + company_id);
+  }
+
   building_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/building_types', {});
   }
 
+  buildings_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/buildings/company/' + company_id);
+  }
+
   rack_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/rack_types', {});
+  }
+
+  racks_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/racks/company/' + company_id);
   }
 
   rack_switch_types(): Observable<any> {
@@ -66,6 +78,10 @@ export class ApiService {
     return this.http.get(environment.apiEndpoint + '/server_types', {});
   }
 
+  servers_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/servers/company/' + company_id);
+  }
+
   companies(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/companies', {});
   }
@@ -85,6 +101,12 @@ export class ApiService {
   buy_area(area_id: string): Observable<any> {
     return this.http.post(environment.apiEndpoint + '/areas', {
       id: area_id
+    });
+  }
+
+  buy_building(type: any): Observable<any> {
+    return this.http.post(environment.apiEndpoint + '/buildings', {
+      type: type
     });
   }
 

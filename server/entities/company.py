@@ -16,6 +16,31 @@ class Company(object):
         }
         self.datacenters = []
 
+    # retrieves areas owned by this company
+    def get_areas(self):
+        return self.inventory["areas"]
+
+
+    # retrieves buildings owned by this company
+    def get_buildings(self):
+        return self.inventory["buildings"]
+
+    # retrieves racks owned by this company
+    def get_racks(self):
+        return self.inventory["racks"]
+
+    # retrieves rack_switches owned by this company
+    def get_rack_switches(self):
+        return self.inventory["rack_switches"]
+
+    # retrieves rack_pdus owned by this company
+    def get_rack_pdus(self):
+        return self.inventory["rack_pdus"]
+
+    # retrieves servers owned by this company
+    def get_servers(self):
+        return self.inventory["servers"]
+
     # add item to inventory
     def add_to_inventory(self, entity, obj):
         self.inventory[entity].append(obj)

@@ -47,9 +47,7 @@ export class DefaultLayoutComponent implements OnInit {
     });
 
     this.state.update.subscribe((res) => {
-      this.auth_service.getUser().subscribe(res => {
-        this.updateState();
-      })
+      this.updateState();
     })
   }
 

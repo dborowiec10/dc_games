@@ -20,10 +20,19 @@ def buy_area(user, area_id):
 
 # manages purchasing buildings
 def buy_building(user, building_type):
-
-    
-
-    pass
+    company = user.company
+    building_type = datastore.find_building_type(building_type["type"])
+    if building_type == None:
+        return None, "Unknown bulding type requested!"
+    else:
+        if not company.can_afford(building_type["price"]):
+            return None, "You do not have enough credits to purchase this item!"
+        else:
+            company.deduct_balance(building_type["price"])
+            building = entity_factory.get_building(building_type)
+            company.add_to_inventory("buildings", building)
+            datastore.add_building(building)
+            return "Purchased Building, should appear in inventory shortly!", None
 
 # manages purchasing racks
 def buy_rack(user: User, rack_type, quantity):

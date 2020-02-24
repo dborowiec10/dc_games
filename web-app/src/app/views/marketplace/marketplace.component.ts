@@ -149,6 +149,18 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
 
   purchaseBuilding(building_type: any){
     console.log(building_type);
+    this._apiSvc.buy_building(building_type).subscribe((res) => {
+      this.state.update.next(true);
+      if(res["data"]["success"]){
+        this.toast.success(res["data"]["success"], "Purchase Successful!", {
+          timeOut: 8000
+        });
+      } else {
+        this.toast.error(res["data"]["error"], "Purchase Unsuccessful!", {
+          timeOut: 8000
+        });
+      }
+    });
     this.building_purchase_modal.hide();
   }
 

@@ -23,6 +23,7 @@ companies = []
 racks = []
 rack_switches = []
 rack_pdus = []
+buildings = []
 
 # return config value by key
 def conf(key):
@@ -107,6 +108,12 @@ def load_entities():
                     usr.company = c
             users.append(usr)
 
+# given building type, return building type object
+def find_building_type(_type):
+    for b in building_types:
+        if b["type"] == _type:
+            return b
+    return None
             
 # given id, return area
 def find_area_by_id(_id):
@@ -178,3 +185,7 @@ def add_rack_pdu(rack_pdu):
 # given a rack_switch, inserts it to the store
 def add_rack_switch(rack_switch):
     rack_switches.append(rack_switch)
+
+# given a building, inserts it to the store
+def add_building(building):
+    buildings.append(building)
