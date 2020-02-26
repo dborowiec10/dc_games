@@ -10,7 +10,6 @@ class Area(object):
         self.status = "unpurchased"
         self.buildings = []
         
-
     def serialize(self):
         return {
             "id": self.id,
@@ -19,6 +18,7 @@ class Area(object):
             "square_metres": self.square_metres,
             "average_temperature": self.average_temperature,
             "price": self.price,
+            "owner_id": self.owner_id,
             "status": self.status,
-            "owner_id": self.owner_id
+            "buildings": [b.serialize() for b in self.buildings]
         }

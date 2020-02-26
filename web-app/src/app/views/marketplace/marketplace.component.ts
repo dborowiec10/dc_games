@@ -239,20 +239,20 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
       type["type"] = "custom";
       type["base_power_usage"] = (10 + (15 * this.custom_server_max_cpus) + (5 * this.custom_server_max_memories) + (10 * this.custom_server_max_accelerators));
       type["base_price"] = (50 + (75 * this.custom_server_max_cpus) + (75 * this.custom_server_max_memories) + (30 * this.custom_server_max_accelerators));
-      type["max_cpus"] = this.custom_server_max_cpus;
-      type["max_memories"] = this.custom_server_max_memories;
-      type["max_accelerators"] = this.custom_server_max_accelerators;
+      type["max_cpus"] = parseInt(this.custom_server_max_cpus.toString(), 10);
+      type["max_memories"] = parseInt(this.custom_server_max_memories.toString(), 10);
+      type["max_accelerators"] = parseInt(this.custom_server_max_accelerators.toString(), 10);
       type["cpus"] = {
-        count: this.custom_server_cpu_quantity,
+        count: parseInt(this.custom_server_cpu_quantity.toString(), 10),
         type: this.custom_server_cpu
       };
       type["memories"] = {
-        count: this.custom_server_memory_quantity,
+        count: parseInt(this.custom_server_memory_quantity.toString(), 10),
         type: this.custom_server_memory
       };
       if(this.custom_server_accelerator_quantity > 0){
         type["accelerators"] = {
-          count: this.custom_server_accelerator_quantity,
+          count: parseInt(this.custom_server_accelerator_quantity.toString(), 10),
           type: this.custom_server_accelerator
         };
       }
@@ -265,7 +265,7 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
     } else {
       type = server_type;
     }
-    this._apiSvc.buy_server(type, quantity).subscribe((res) => {
+    this._apiSvc.buy_server(type, parseInt(quantity.toString())).subscribe((res) => {
       this.state.update.next(true);
       if(res["data"]["success"]){
         this.toast.success(res["data"]["success"], "Purchase Successful!", {

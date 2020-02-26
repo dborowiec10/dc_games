@@ -50,28 +50,56 @@ export class ApiService {
     return this.http.get(environment.apiEndpoint + '/rack_switch_types', {});
   }
 
+  rack_switches_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/rack_switches/company/' + company_id);
+  }
+
   rack_pdu_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/rack_pdu_types', {});
+  }
+
+  rack_pdus_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/rack_pdus/company/' + company_id);
   }
 
   accelerator_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/accelerator_types', {});
   }
 
+  accelerators_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/accelerators/company/' + company_id);
+  }
+
   cpu_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/cpu_types', {});
+  }
+
+  cpus_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/cpus/company/' + company_id);
   }
 
   memory_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/memory_types', {});
   }
 
+  memories_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/memories/company/' + company_id);
+  }
+
   psu_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/psu_types', {});
   }
 
+  psus_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/psus/company/' + company_id);
+  }
+
   server_cooling_types(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/server_cooling_types', {});
+  }
+
+  server_coolings_by_company(company_id: string): Observable<any> {
+    return this.http.get(environment.apiEndpoint + '/server_coolings/company/' + company_id);
   }
 
   server_types(): Observable<any> {

@@ -25,7 +25,6 @@ class Company(object):
     def get_areas(self):
         return self.inventory["areas"]
 
-
     # retrieves buildings owned by this company
     def get_buildings(self):
         return self.inventory["buildings"]

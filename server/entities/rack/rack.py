@@ -13,6 +13,7 @@ class Rack(object):
     def serialize(self):
         return {
             "id": self.id,
+            "type": self.type,
             "datacenter_id": self.datacenter_id,
             "max_server_capacity": self.max_server_capacity,
             "server_capacity": len(self.servers),

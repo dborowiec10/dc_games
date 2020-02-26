@@ -29,7 +29,14 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   public areas = [];
   public buildings = [];
   public racks = [];
+  public rack_switches = [];
+  public rack_pdus = [];
   public servers = [];
+  public cpus = [];
+  public memories = [];
+  public accelerators = [];
+  public psus = [];
+  public server_coolings = [];
 
   private tab_id = 'areas';
   private other_id = null;
@@ -52,13 +59,26 @@ export class InventoryComponent implements OnInit, AfterViewInit {
           elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
           elem.focus();
         }
-
       } else if(this.tab_id === 'buildings') {
         this.tabs.tabs[1].active = true;
       } else if(this.tab_id === 'racks') {
         this.tabs.tabs[2].active = true;
-      } else if(this.tab_id === 'servers') {
+      } else if(this.tab_id === 'rack_switches') {
         this.tabs.tabs[3].active = true;
+      } else if(this.tab_id === 'rack_pdus') {
+        this.tabs.tabs[4].active = true;
+      } else if(this.tab_id === 'servers') {
+        this.tabs.tabs[5].active = true;
+      } else if(this.tab_id === 'cpus') {
+        this.tabs.tabs[6].active = true;
+      } else if(this.tab_id === 'memories') {
+        this.tabs.tabs[7].active = true;
+      } else if(this.tab_id === 'accelerators') {
+        this.tabs.tabs[8].active = true;
+      } else if(this.tab_id === 'psus') {
+        this.tabs.tabs[9].active = true;
+      } else if(this.tab_id === 'server_coolings') {
+        this.tabs.tabs[10].active = true;
       }
     })();
   }
@@ -78,18 +98,57 @@ export class InventoryComponent implements OnInit, AfterViewInit {
 
       this._apiSvc.areas_by_company(this.current_user['company_id']).subscribe((a_res) => {
         this.areas = a_res["areas"];
+        console.log(this.areas);
       });
 
       this._apiSvc.buildings_by_company(this.current_user['company_id']).subscribe((b_res) => {
         this.buildings = b_res["buildings"];
+        console.log(this.buildings);
       });
 
       this._apiSvc.racks_by_company(this.current_user['company_id']).subscribe((r_res) => {
         this.racks = r_res["racks"];
+        console.log(this.racks);
+      });
+
+      this._apiSvc.rack_switches_by_company(this.current_user['company_id']).subscribe((r_res) => {
+        this.rack_switches = r_res["rack_switches"];
+        console.log(this.rack_switches);
+      });
+
+      this._apiSvc.rack_pdus_by_company(this.current_user['company_id']).subscribe((r_res) => {
+        this.rack_pdus = r_res["rack_pdus"];
+        console.log(this.rack_pdus);
       });
 
       this._apiSvc.servers_by_company(this.current_user['company_id']).subscribe((s_res) => {
         this.servers = s_res["servers"];
+        console.log(this.servers);
+      });
+
+      this._apiSvc.cpus_by_company(this.current_user['company_id']).subscribe((s_res) => {
+        this.cpus = s_res["cpus"];
+        console.log(this.cpus);
+      });
+
+      this._apiSvc.memories_by_company(this.current_user['company_id']).subscribe((s_res) => {
+        this.memories = s_res["memories"];
+        console.log(this.memories);
+      });
+
+      this._apiSvc.accelerators_by_company(this.current_user['company_id']).subscribe((s_res) => {
+        this.accelerators = s_res["accelerators"];
+        console.log(this.accelerators);
+      });
+
+      this._apiSvc.psus_by_company(this.current_user['company_id']).subscribe((s_res) => {
+        this.psus = s_res["psus"];
+        console.log(this.psus);
+      });
+
+      this._apiSvc.server_coolings_by_company(this.current_user['company_id']).subscribe((s_res) => {
+        this.server_coolings = s_res["server_coolings"];
+        console.log(this.server_coolings);
       });
 
     });

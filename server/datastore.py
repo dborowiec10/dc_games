@@ -126,7 +126,7 @@ def find_building_type(_type):
 # given id, return area
 def find_area_by_id(_id):
     for a in areas:
-        if a['id'] == _id:
+        if a.id == _id:
             return a
     return None
 

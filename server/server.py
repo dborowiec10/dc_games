@@ -180,7 +180,6 @@ def get_rack_switch_types():
     else:
         return jsonify(rack_switch_types=datastore.rack_switch_types), 200
 
-
 # endpoint for retrieving rack pdu types
 @app.route('/rack_pdu_types', methods=['GET'])
 @cross_origin()
@@ -387,8 +386,7 @@ def get_buildings_for_company(id):
         if comp == None:
             return jsonify(data={"error": "Could not find specified company!"}), 200
         else:
-            buildings = comp.get_buildings()
-            return jsonify(areas=[b.serialize() for b in buildings]), 200
+            return jsonify(buildings=list(map(lambda b: b.serialize(), comp.get_buildings()))), 200
 
 
 # endpoint for retrieving racks owned by specific company
@@ -403,8 +401,37 @@ def get_racks_for_company(id):
         if comp == None:
             return jsonify(data={"error": "Could not find specified company!"}), 200
         else:
-            racks = comp.get_racks()
-            return jsonify(areas=[r.serialize() for r in racks]), 200
+            return jsonify(racks=list(map(lambda r: r.serialize(), comp.get_racks()))), 200
+
+
+# endpoint for retrieving rack switches owned by specific company
+@app.route('/rack_switches/company/<id>', methods=['GET'])
+@cross_origin()
+def get_rack_switches_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            return jsonify(rack_switches=list(map(lambda r: r.serialize(), comp.get_rack_switches()))), 200
+
+
+# endpoint for retrieving rack pdus owned by specific company
+@app.route('/rack_pdus/company/<id>', methods=['GET'])
+@cross_origin()
+def get_rack_pdus_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            return jsonify(rack_pdus=list(map(lambda r: r.serialize(), comp.get_rack_pdus()))), 200
 
 
 # endpoint for retrieving servers owned by specific company
@@ -419,6 +446,79 @@ def get_servers_for_company(id):
         if comp == None:
             return jsonify(data={"error": "Could not find specified company!"}), 200
         else:
-            servers = comp.get_servers()
-            return jsonify(areas=[s.serialize() for s in servers]), 200
+            return jsonify(servers=list(map(lambda s: s.serialize(), comp.get_servers()))), 200
 
+
+# endpoint for retrieving cpus owned by specific company
+@app.route('/cpus/company/<id>', methods=['GET'])
+@cross_origin()
+def get_cpus_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            return jsonify(cpus=list(map(lambda s: s.serialize(), comp.get_cpus()))), 200
+
+
+# endpoint for retrieving memories owned by specific company
+@app.route('/memories/company/<id>', methods=['GET'])
+@cross_origin()
+def get_memories_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            return jsonify(memories=list(map(lambda s: s.serialize(), comp.get_memories()))), 200
+
+
+# endpoint for retrieving accelerators owned by specific company
+@app.route('/accelerators/company/<id>', methods=['GET'])
+@cross_origin()
+def get_accelerators_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            return jsonify(accelerators=list(map(lambda s: s.serialize(), comp.get_accelerators()))), 200
+
+
+# endpoint for retrieving psus owned by specific company
+@app.route('/psus/company/<id>', methods=['GET'])
+@cross_origin()
+def get_psus_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            return jsonify(psus=list(map(lambda s: s.serialize(), comp.get_psus()))), 200
+
+
+# endpoint for retrieving server_coolings owned by specific company
+@app.route('/server_coolings/company/<id>', methods=['GET'])
+@cross_origin()
+def get_server_coolings_for_company(id):
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    else:
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Could not find specified company!"}), 200
+        else:
+            return jsonify(server_coolings=list(map(lambda s: s.serialize(), comp.get_server_coolings()))), 200

@@ -127,9 +127,9 @@ class Server(object):
             "max_cpus": self.max_cpus,
             "max_memories": self.max_memories,
             "max_accelerators": self.max_accelerators,
-            "cpus": map(lambda c: c.serialize(), self.cpus),
-            "memories": map(lambda m: m.serialize(), self.memories),
-            "accelerators": map(lambda a: a.serialize(), self.accelerators),
+            "cpus": list(map(lambda c: c.serialize(), self.cpus)),
+            "memories": list(map(lambda m: m.serialize(), self.memories)),
+            "accelerators": list(map(lambda a: a.serialize(), self.accelerators)),
             "psu": self.psu.serialize(),
             "server_cooling": self.server_cooling.serialize(),
             "rack_id": self.rack_id

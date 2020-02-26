@@ -7,7 +7,7 @@ class DatacenterBuilding(object):
         self.sqmt = sqmt
         self.max_racks = max_racks
         self.racks = []
-        self.area = None
+        self.area_id = None
 
     def serialize(self):
         return {
@@ -15,6 +15,6 @@ class DatacenterBuilding(object):
             "type": self.type,
             "square_metres": self.sqmt,
             "max_racks": self.max_racks,
-            "racks": map(lambda r: r.serialize(), self.racks.values()),
-            "area": self.area
+            "racks": [r.serialize() for r in self.racks],
+            "area_id": self.area_id
         }

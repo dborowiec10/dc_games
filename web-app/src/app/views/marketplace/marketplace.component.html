@@ -115,8 +115,8 @@
                     <h6 class="price_color" *ngIf="pack['rs'] && pack['rp']"><b>Single Unit Price:</b> {{r['base_price'] + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
                     <form>
                       <div class="form-group">
-                        <label for="rackSelect1"><b>Quantity:</b></label>
-                        <select class="form-control form-control-sm" id="rackSelect1" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
+                        <h6><b>Quantity:</b></h6>
+                        <select class="form-control form-control-sm" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
                           <option>1</option>
                           <option>2</option>
                           <option>5</option>
@@ -143,7 +143,7 @@
                     <hr>
                     <form>
                       <div class="form-group">
-                        <label for="serverCapacitySelect"><b>Max Server Capacity:</b></label>
+                        <h6><b>Max Server Capacity:</b></h6>
                         <select class="form-control form-control-sm" id="serverCapacitySelect" [(ngModel)]="custom_rack_max_server_capacity" [ngModelOptions]="{standalone: true}">
                           <option>20</option>
                           <option>22</option>
@@ -162,7 +162,7 @@
                     <hr>
                     <form>
                       <div class="form-group">
-                        <label for="rackPduTypeSelect"><b>Type:</b></label>
+                        <h6><b>Type:</b></h6>
                         <select class="form-control form-control-sm" id="rackPduTypeSelect" [(ngModel)]="custom_rack_rack_pdu" [ngModelOptions]="{standalone: true}">
                           <option *ngFor="let rp of rack_pdu_types" [value]="rp['type']">{{rp['type']}}</option>
                         </select>
@@ -182,7 +182,7 @@
                     <hr>
                     <form>
                       <div class="form-group">
-                        <label for="rackSwitchTypeSelect"><b>Type:</b></label>
+                        <h6><b>Type:</b></h6>
                         <select class="form-control form-control-sm" id="rackSwitchTypeSelect" [(ngModel)]="custom_rack_rack_switch" [ngModelOptions]="{standalone: true}">
                           <option *ngFor="let rs of rack_switch_types" [value]="rs['type']">{{rs['type']}}</option>
                         </select>
@@ -220,7 +220,7 @@
                     <h6 *ngIf="pack['rs'] && pack['rp'] && custom_rack_max_server_capacity"><b>Single Unit Price:</b> {{(500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
                     <form>
                       <div class="form-group">
-                        <label for="rackCustomSelect"><b>Quantity:</b></label>
+                        <h6><b>Quantity:</b></h6>
                         <select class="form-control form-control-sm" id="rackCustomSelect" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
                           <option>1</option>
                           <option>2</option>
@@ -381,13 +381,13 @@
                     (s['memories']['count'] * pack['mem']['price']) +
                     pack['psu']['price'] + 
                     pack['server_cooling']['price'] +
-                    ((pack['acc'] ? pack['acc']['price'] : 0) * (s['accelerators'] ? s['accelerators']['count'] : 0))) as single_unit_price
+                    ((pack['acc'] != null ? pack['acc']['price'] : 0) * (s['accelerators'] ? s['accelerators']['count'] : 0))) as single_unit_price
                     ">
                       <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Single Unit Price:</b> {{single_unit_price | number }} D$</h6>
                       <form>
                         <div class="form-group">
-                          <label for="serverSelect1"><b>Quantity:</b></label>
-                          <select class="form-control form-control-sm" id="serverSelect1" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
+                          <h6><b>Quantity:</b></h6>
+                          <select class="form-control form-control-sm" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
                             <option>1</option>
                             <option>2</option>
                             <option>5</option>
@@ -419,29 +419,19 @@
                       <div class="form-group">
                         <h6><b>Max CPUs:</b></h6>
                         <select class="form-control form-control-sm" id="serverMaxCpusSelect" [(ngModel)]="custom_server_max_cpus" [ngModelOptions]="{standalone: true}">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
+                          <option *ngFor="let i of range_of(4, 1)" [ngValue]="i">{{i}}</option>
                         </select>
                       </div>
                       <div class="form-group">
                         <h6><b>Max Memories:</b></h6>
                         <select class="form-control form-control-sm" id="serverMaxMemoriesSelect" [(ngModel)]="custom_server_max_memories" [ngModelOptions]="{standalone: true}">
-                          <option>2</option>
-                          <option>4</option>
-                          <option>6</option>
-                          <option>8</option>
+                          <option *ngFor="let i of range_of(8, 1)" [ngValue]="i">{{i}}</option>
                         </select>
                       </div>
                       <div class="form-group">
                         <h6><b>Max Accelerators:</b></h6>
                         <select class="form-control form-control-sm" id="serverMaxAcceleratorsSelect" [(ngModel)]="custom_server_max_accelerators" [ngModelOptions]="{standalone: true}">
-                          <option>0</option>
-                          <option>1</option>
-                          <option>2</option>
-                          <option>4</option>
-                          <option>6</option>
+                          <option *ngFor="let i of range_of(6, 0)" [ngValue]="i">{{i}}</option>
                         </select>
                       </div>
                     </form>
@@ -466,7 +456,7 @@
                       <div class="form-group" *ngVar="cpu_by_type(custom_server_cpu) as cpu">
                         <h6><b>Type:</b></h6>
                         <select class="form-control form-control-sm" id="serverCustomCpu" [(ngModel)]="custom_server_cpu" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let c of cpu_types" [value]="c['type']">{{c['type']}}</option>
+                          <option *ngFor="let c of cpu_types" [ngValue]="c['type']">{{c['type']}}</option>
                         </select>
                         <br>
                         <h6 *ngIf="cpu"><b>Cores:</b> {{cpu['cores']}}</h6>
@@ -477,7 +467,7 @@
                         <br>
                         <h6><b>CPU Count:</b></h6>
                         <select class="form-control form-control-sm" id="serverCustomCpuQuantity" [(ngModel)]="custom_server_cpu_quantity" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let i of range_of(custom_server_max_cpus, 1)" [value]="i">{{i}}</option>
+                          <option *ngFor="let i of range_of(custom_server_max_cpus, 1)" [ngValue]="i">{{i}}</option>
                         </select>
                         <hr>
                         <h6 class="price_color" *ngIf="cpu"><b>Unit Price:  </b>{{cpu['price'] | number}} D$</h6>
@@ -492,7 +482,7 @@
                       <div class="form-group" *ngVar="memory_by_type(custom_server_memory) as mem">
                         <h6><b>Type:</b></h6>
                         <select class="form-control form-control-sm" id="serverCustomMemory" [(ngModel)]="custom_server_memory" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let m of memory_types" [value]="m['type']">{{m['type']}}</option>
+                          <option *ngFor="let m of memory_types" [ngValue]="m['type']">{{m['type']}}</option>
                         </select>
                         <br>
                         <h6 *ngIf="mem"><b>Capacity: </b> {{mem['capacity'] | number}} MB</h6>
@@ -501,7 +491,7 @@
                         <hr>
                         <h6><b>Module Count: </b></h6>
                         <select class="form-control form-control-sm" id="serverCustomMemoryQuantity" [(ngModel)]="custom_server_memory_quantity" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let i of range_of(custom_server_max_memories, 1)" [value]="i">{{i}}</option>
+                          <option *ngFor="let i of range_of(custom_server_max_memories, 1)" [ngValue]="i">{{i}}</option>
                         </select>
                         <hr>
                         <h6 class="price_color" *ngIf="mem"><b>Unit Price:  </b>{{mem['price'] | number}} D$</h6>
@@ -520,7 +510,7 @@
                       <div class="form-group" *ngVar="accelerator_by_type(custom_server_accelerator) as acc">
                         <h6><b>Type:</b></h6>
                         <select class="form-control form-control-sm" id="serverCustomAccelerator" [(ngModel)]="custom_server_accelerator" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let a of accelerator_types" [value]="a['type']">{{a['type']}}</option>
+                          <option *ngFor="let a of accelerator_types" [ngValue]="a['type']">{{a['type']}}</option>
                         </select>
                         <br>
                         <h6 *ngIf="acc"><b>Max Ops/s: </b> {{acc['flops'] | number }} DLOPS</h6>
@@ -529,7 +519,7 @@
                         <hr>
                         <h6><b>Accelerator Count: </b></h6>
                         <select class="form-control form-control-sm" id="serverCustomAcceleratorQuantity" [(ngModel)]="custom_server_accelerator_quantity" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let i of range_of(custom_server_max_accelerators, 1)" [value]="i">{{i}}</option>
+                          <option *ngFor="let i of range_of(custom_server_max_accelerators, 1)" [ngValue]="i">{{i}}</option>
                         </select>
                         <hr>
                         <h6 class="price_color" *ngIf="acc"><b>Unit Price:  </b>{{acc['price'] | number}} D$</h6>
@@ -544,7 +534,7 @@
                       <div class="form-group" *ngVar="psu_by_type(custom_server_psu) as psu">
                         <h6><b>Type:</b></h6>
                         <select class="form-control form-control-sm" id="serverCustomPsu" [(ngModel)]="custom_server_psu" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let a of psu_types" [value]="a['type']">{{a['type']}}</option>
+                          <option *ngFor="let a of psu_types" [ngValue]="a['type']">{{a['type']}}</option>
                         </select>
                         <br>
                         <h6 *ngIf="psu"><b>Max Power Supply: </b> {{psu['max_power_supply'] | number }} Watts</h6>
@@ -562,7 +552,7 @@
                       <div class="form-group" *ngVar="server_cooling_by_type(custom_server_cooling) as server_cooling">
                         <h6><b>Type:</b></h6>
                         <select class="form-control form-control-sm" id="serverCustomServerCooling" [(ngModel)]="custom_server_cooling" [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let sc of server_cooling_types" [value]="sc['type']">{{sc['type']}}</option>
+                          <option *ngFor="let sc of server_cooling_types" [ngValue]="sc['type']">{{sc['type']}}</option>
                         </select>
                         <br>
                         <h6 *ngIf="server_cooling"><b>Max Power Usage: </b> {{server_cooling['max_power_usage'] | number }} Watts</h6>
@@ -639,17 +629,17 @@
                       <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Single Unit Price:</b> {{single_unit_price | number }} D$</h6>
                       <form>
                         <div class="form-group">
-                          <label for="serverSelect1"><b>Quantity:</b></label>
-                          <select class="form-control form-control-sm" id="serverSelect1" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>5</option>
-                            <option>10</option>
-                            <option>25</option>
-                            <option>50</option>
-                            <option>100</option>
-                            <option>500</option>
-                            <option>1000</option>
+                          <h6><b>Quantity:</b></h6>
+                          <select class="form-control form-control-sm" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
+                            <option [ngValue]="1">1</option>
+                            <option [ngValue]="2">2</option>
+                            <option [ngValue]="5">5</option>
+                            <option [ngValue]="10">10</option>
+                            <option [ngValue]="25">25</option>
+                            <option [ngValue]="50">50</option>
+                            <option [ngValue]="100">100</option>
+                            <option [ngValue]="500">500</option>
+                            <option [ngValue]="1000">1000</option>
                           </select>
                         </div>
                         <hr>
