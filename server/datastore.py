@@ -143,6 +143,48 @@ def find_rack_switch_type(_type):
             return r
     return None
 
+# given server type name, return server type
+def find_server_type(_type):
+    for s in server_types:
+        if s['type'] == _type:
+            return s
+    return None
+
+# given cpu type name, return cpu type
+def find_cpu_type(_type):
+    for c in cpu_types:
+        if c['type'] == _type:
+            return c
+    return None
+
+# given memory type name, return memory type
+def find_memory_type(_type):
+    for m in memory_types:
+        if m['type'] == _type:
+            return m
+    return None
+
+# given accelerator type name, return accelerator type
+def find_accelerator_type(_type):
+    for a in accelerator_types:
+        if a['type'] == _type:
+            return a
+    return None
+
+# given psu type name, return psu type
+def find_psu_type(_type):
+    for p in psu_types:
+        if p['type'] == _type:
+            return p
+    return None
+
+# given server cooling type name, return server cooling type
+def find_server_cooling_type(_type):
+    for sc in server_cooling_types:
+        if sc['type'] == _type:
+            return sc
+    return None
+
 # given an id, get the company object
 def find_company_by_id(_id):
     for c in companies:
@@ -150,6 +192,12 @@ def find_company_by_id(_id):
             return c
     return None
 
+# given an id, get the server object
+def find_server_by_id(_id):
+    for s in servers:
+        if s.id == _id:
+            return s
+    return None
 
 # given an id, get the user object
 def find_user_by_id(_id):

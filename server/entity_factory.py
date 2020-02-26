@@ -14,7 +14,7 @@ from entities.server.server_cooling import ServerCooling
 from entities.server.server import Server
 
 # generates building from blueprint
-def get_building(_type):
+def gen_building(_type):
     return DatacenterBuilding(_type["type"], _type["square_metres"], _type["max_racks"]);
 
 # generates rack pdu object from blueprint
@@ -29,5 +29,8 @@ def gen_rack_switch(_type):
 def gen_rack(_type, rack_pdu, rack_switch):
     return Rack(_type["type"], _type["max_server_capacity"], rack_pdu, rack_switch)
 
+# generates cpu object from blueprint
+def gen_cpu(type):
+    return Cpu(_type["type"], _type["cores"], _type["max_freq"], _type["max_temp"], _type["max_power_usage"], _type["flops"])
 
-
+# generates memory object from blueprint

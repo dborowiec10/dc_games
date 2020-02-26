@@ -117,6 +117,13 @@ export class ApiService {
     });
   }
 
+  buy_server(type: any, quantity: number): Observable<any> {
+    return this.http.post(environment.apiEndpoint + '/servers', {
+      type: type,
+      quantity: quantity
+    });
+  }
+
 
 
 }

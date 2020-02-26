@@ -304,24 +304,6 @@ def get_user(id):
         return jsonify(data={"error": "User not found!"}), 200 
 
 
-# endpoint for buying racks
-@app.route('/racks', methods=['POST'])
-@cross_origin()
-def buy_rack():
-    data = json.loads(request.data)
-    user = get_user_from_req()
-    if user == None:
-        return jsonify(data={"error": "Unauthorized!"}), 401
-    elif data == None:
-        return jsonify(data={"error": "Bad Request!"}), 400
-    else:
-        res, error = marketplace.buy_rack(user, data["type"], data["quantity"])
-        if error != None:
-            return jsonify(data={"error": error})
-        else:
-            return jsonify(data={"success": res}), 200
-
-
 # endpoint for buying areas
 @app.route('/areas', methods=['POST'])
 @cross_origin()
@@ -357,6 +339,41 @@ def buy_building():
         else:
             return jsonify(data={"success": res}), 200
 
+# endpoint for buying racks
+@app.route('/racks', methods=['POST'])
+@cross_origin()
+def buy_rack():
+    data = json.loads(request.data)
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    elif data == None:
+        return jsonify(data={"error": "Bad Request!"}), 400
+    else:
+        res, error = marketplace.buy_rack(user, data["type"], data["quantity"])
+        if error != None:
+            return jsonify(data={"error": error})
+        else:
+            return jsonify(data={"success": res}), 200
+
+
+# endpoint for buying servers
+@app.route('/servers', methods=['POST'])
+@cross_origin()
+def buy_server():
+    data = json.loads(request.data)
+    user = get_user_from_req()
+    if user == None:
+        return jsonify(data={"error": "Unauthorized!"}), 401
+    elif data == None:
+        return jsonify(data={"error": "Bad Request!"}), 400
+    else:
+        res, error = marketplace.buy_server(user, data["type"], data["quantity"])
+        if error != None:
+            return jsonify(data={"error": error})
+        else:
+            return jsonify(data={"success": res}), 200
+            
 
 # endpoint for retrieving buildings owned by specific company
 @app.route('/buildings/company/<id>', methods=['GET'])

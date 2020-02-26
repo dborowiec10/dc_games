@@ -2,20 +2,20 @@
     {
         "type": "Tektronix-Alpha",
         "max_cpus": 2,
-        "max_memory": 2,
+        "max_memories": 2,
         "max_accelerators": 0,
         "cpus": {
             "type": "Core1000-X",
             "count": 2
         },
-        "memory": {
+        "memories": {
             "type": "Neuron10",
             "count": 2
         },
         "psu": {
             "type": "Volta1-A"
         },
-        "cooling": {
+        "server_cooling": {
             "type": "AeroMaster-Lite"
         },
         "base_power_usage": 50,
@@ -24,20 +24,20 @@
     {
         "type": "Tektronix-Beta",
         "max_cpus": 2,
-        "max_memory": 4,
+        "max_memories": 4,
         "max_accelerators": 0,
         "cpus": {
             "type": "Core2000-Y",
             "count": 2
         },
-        "memory": {
+        "memories": {
             "type": "Neuron10",
             "count": 4
         },
         "psu": {
             "type": "Volta1-A-Green"
         },
-        "cooling": {
+        "server_cooling": {
             "type": "AeroMaster-Lite"
         },
         "base_power_usage": 60,
@@ -46,20 +46,20 @@
     {
         "type": "Tektronix-Gamma",
         "max_cpus": 2,
-        "max_memory": 4,
-        "max_accelerators": 2,
+        "max_memories": 6,
+        "max_accelerators": 4,
         "cpus": {
             "type": "Core4000-Z",
             "count": 2
         },
-        "memory": {
+        "memories": {
             "type": "Neuron20",
-            "count": 4
+            "count": 6
         },
         "psu": {
             "type": "Volta1-A-Green"
         },
-        "cooling": {
+        "server_cooling": {
             "type": "AeroMaster-Aqua"
         },
         "accelerators": {

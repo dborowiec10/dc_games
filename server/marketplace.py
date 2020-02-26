@@ -29,7 +29,7 @@ def buy_building(user, building_type):
             return None, "You do not have enough credits to purchase this item!"
         else:
             company.deduct_balance(building_type["price"])
-            building = entity_factory.get_building(building_type)
+            building = entity_factory.gen_building(building_type)
             company.add_to_inventory("buildings", building)
             datastore.add_building(building)
             return "Purchased Building, should appear in inventory shortly!", None
@@ -64,5 +64,40 @@ def buy_rack(user: User, rack_type, quantity):
             return "Purchased Rack(s), should appear in inventory shortly!", None
 
 # manages purchasing servers
-def buy_server(user, server_type, quantity):
-    pass
+def buy_server(user: User, server_type, quantity):
+    company = user.company
+
+    base_price = server_type['base_price']
+    total_price = base_price
+
+    cpu_type = datastore.find_cpu_type(server_type['cpus']['type'])
+    total_price = total_price + (cpu_type['price'] * server_type['cpus']['count'])
+
+    mem_type = datastore.find_memory_type(server_type['memories']['type'])
+    total_price = total_price + (mem_type['price'] * server_type['memories']['count'])
+
+    if "accelerators" in server_type:
+        acc_type = datastore.find_accelerator_type(server_type['accelerators']['type'])
+        total_price = total_price + (acc_type['price'] * server_type['accelerators']['count'])
+
+    psu_type = datastore.find_psu_type(server_type['psu']['type'])
+    total_price = total_price + psu_type['price']
+
+    server_cooling_type = datastore.find_server_cooling_type(server_type['server_cooling']['type'])
+    total_price = total_price + server_cooling_type['price']
+    
+    if not company.can_afford(total_price):
+        return None, "You do not have enough credits to purchase this item!"
+    else:
+    
+
+
+    print(user)
+    print(server_type)
+    print(quantity)
+    print(cpu_type)
+    print(mem_type)
+    print(psu_type)
+    print(server_cooling_type)
+    print(base_price)
+    return None, None

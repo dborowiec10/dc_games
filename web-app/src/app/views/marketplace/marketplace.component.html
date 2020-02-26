@@ -23,7 +23,6 @@
                     <td>{{a['price'] | number}} D$</td>
                     <td>
                       <button type="button" (click)="viewArea(a)" class="btn btn-success btn-sm"><span class="cui-magnifying-glass"></span> Map</button>
-                      <button type="button" (click)="areaDetailsView(a)" class="btn btn-info btn-sm"><span class=""></span> Details</button>
                       <button type="button" (click)="areaPurchaseView(a)" class="btn btn-warning btn-sm"><span class=""></span> Purchase</button>
                     </td>
                   </tr>
@@ -53,7 +52,6 @@
                     <td>{{b['square_metres']}}m<sup>2</sup></td>
                     <td>{{b['price'] | number}} D$</td>
                     <td>
-                      <button type="button" (click)="buildingDetailsView(b)" class="btn btn-info btn-sm"><span class=""></span> Details</button>
                       <button type="button" (click)="buildingPurchaseView(b)" class="btn btn-warning btn-sm"><span class=""></span> Purchase</button>
                     </td>
                   </tr>
@@ -71,47 +69,50 @@
                 <ng-template tabHeading><b>{{r['type']}}</b></ng-template>
                 <div class="row">
                   <div class="col-4">
-                    <h5>Base Information</h5>
+                    <h5 class="heading_color">Base Specification</h5>
                     <hr>
                     <h6><b>Max Server Capacity:</b> {{r['max_server_capacity']}}</h6>
-                    <h6><b>Base price:</b> {{r['base_price'] | number}} D$</h6>
+                    <h6 class="price_color"><b>Base price:</b> {{r['base_price'] | number}} D$</h6>
                   </div>
                   <div class="col-4" *ngVar="rack_pdu_by_type(r['rack_pdu']['type']) as rack_pdu">
-                    <h5>Rack PDU (Power Distribution Unit)</h5>
+                    <h5 class="heading_color">Rack PDU (Power Distribution Unit)</h5>
                     <hr>
                     <h6 *ngIf="rack_pdu"><b>Type:</b> {{rack_pdu['type']}}</h6>
                     <h6 *ngIf="rack_pdu"><b>Max Power Supply:</b> {{rack_pdu['max_power_supply'] | number}} Watts</h6>
                     <h6 *ngIf="rack_pdu"><b>Max Power Loss:</b> {{rack_pdu['max_power_loss']}} / 1</h6>
                     <h6 *ngIf="rack_pdu"><b>Max Operating Temperature:</b> {{rack_pdu['max_temp']}}&#8451;</h6>
-                    <h6 *ngIf="rack_pdu"><b>Price:</b> {{rack_pdu['price'] | number}} D$</h6>
+                    <h6 class="price_color" *ngIf="rack_pdu"><b>Price:</b> {{rack_pdu['price'] | number}} D$</h6>
                   </div>
                   <div class="col-4" *ngVar="rack_switch_by_type(r['rack_switch']['type']) as rack_switch">
-                    <h5>Rack Switch (Networking Equipment)</h5>
+                    <h5 class="heading_color">Rack Switch (Networking Equipment)</h5>
                     <hr>
                     <h6 *ngIf="rack_switch"><b>Type:</b> {{rack_switch['type']}}</h6>
                     <h6 *ngIf="rack_switch"><b>Max Power Usage:</b> {{rack_switch['max_power_usage'] | number}} Watts</h6>
                     <h6 *ngIf="rack_switch"><b>Max Throughput:</b> {{rack_switch['max_throughput'] | number}} DLOPS</h6>
                     <h6 *ngIf="rack_switch"><b>Max Operating Temperature:</b> {{rack_switch['max_temperature']}}&#8451;</h6>
-                    <h6 *ngIf="rack_switch"><b>Price:</b> {{rack_switch['price'] | number}} D$</h6>
+                    <h6 class="price_color" *ngIf="rack_switch"><b>Price:</b> {{rack_switch['price'] | number}} D$</h6>
                   </div>
                 </div>
                 <hr>
                 <hr>
                 <div class="row">
-                  <div class="col-4" *ngVar="{rs: rack_switch_by_type(r['rack_switch']['type']), rp: rack_pdu_by_type(r['rack_pdu']['type'])} as pack">
-                    <h5>Summary Information:</h5>
+                  <div class="col-4" *ngVar="{
+                      rs: rack_switch_by_type(r['rack_switch']['type']),
+                      rp: rack_pdu_by_type(r['rack_pdu']['type'])
+                    } as pack">
+                    <h5 class="summary_heading_color">Summary Information:</h5>
                     <hr>
-                    <h6 *ngIf="pack"><b>Max Server Capacity:</b> {{r['max_server_capacity']}}</h6>
-                    <h6 *ngIf="pack"><b>Base Max Power Usage:</b> {{(pack['rp']['max_power_supply'] * pack['rp']['max_power_loss']) + pack['rs']['max_power_usage'] | number}} Watts</h6>
-                    <h6 *ngIf="pack"><b>Base Max Temperature:</b> {{math.max(pack['rp']['max_temp'], pack['rs']['max_temperature'])}}&#8451;</h6>
-                    <h6 *ngIf="pack"><b>Max Power Supply:</b> {{pack['rp']['max_power_supply'] | number}} Watts</h6>
-                    <h6 *ngIf="pack"><b>Max Networking Throughput:</b> {{pack['rs']['max_throughput'] | number}} DLOPS</h6>
-                    <h6 *ngIf="pack"><b>Total Price:</b> {{r['base_price'] + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Max Server Capacity:</b> {{r['max_server_capacity']}}</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Base Max Power Usage:</b> {{(pack['rp']['max_power_supply'] * pack['rp']['max_power_loss']) + pack['rs']['max_power_usage'] | number}} Watts</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Base Max Temperature:</b> {{math.max(pack['rp']['max_temp'], pack['rs']['max_temperature'])}}&#8451;</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Max Power Supply:</b> {{pack['rp']['max_power_supply'] | number}} Watts</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Max Networking Throughput:</b> {{pack['rs']['max_throughput'] | number}} DLOPS</h6>
+                    <h6 class="price_color" *ngIf="pack['rs'] && pack['rp']"><b>Total Price:</b> {{r['base_price'] + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
                   </div>
                   <div class="col-4" *ngVar="{rs: rack_switch_by_type(r['rack_switch']['type']), rp: rack_pdu_by_type(r['rack_pdu']['type'])} as pack">
-                    <h5>Purchase:</h5>
+                    <h5 class="purchase_heading_color">Purchase:</h5>
                     <hr>
-                    <h6 *ngIf="pack"><b>Single Unit Price:</b> {{r['base_price'] + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                    <h6 class="price_color" *ngIf="pack['rs'] && pack['rp']"><b>Single Unit Price:</b> {{r['base_price'] + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
                     <form>
                       <div class="form-group">
                         <label for="rackSelect1"><b>Quantity:</b></label>
@@ -126,7 +127,7 @@
                         </select>
                       </div>
                       <hr>
-                      <h6 *ngIf="pack"><b>Total Price:</b> {{(r['base_price'] + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
+                      <h6 class="price_color" *ngIf="pack['rs'] && pack['rp']"><b>Total Price:</b> {{(r['base_price'] + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
                       <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
                       <br>
                       <button type="submit" (click)="purchaseRack(r, selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
@@ -136,10 +137,9 @@
               </tab>
               <tab *ngIf="custom_rack_done">
                 <ng-template tabHeading>Custom</ng-template>
-
                 <div class="row">
                   <div class="col-4">
-                    <h5>Base Information</h5>
+                    <h5 class="heading_color">Base Specification</h5>
                     <hr>
                     <form>
                       <div class="form-group">
@@ -155,10 +155,10 @@
                         </select>
                       </div>
                     </form>
-                    <h6 *ngIf="custom_rack_max_server_capacity"><b>Base price:</b> {{500 + (custom_rack_max_server_capacity * 150) | number}} D$</h6>
+                    <h6 class="price_color" *ngIf="custom_rack_max_server_capacity"><b>Base price:</b> {{500 + (custom_rack_max_server_capacity * 150) | number}} D$</h6>
                   </div>
                   <div class="col-4">
-                    <h5>Rack PDU (Power Distribution Unit)</h5>
+                    <h5 class="heading_color">Rack PDU (Power Distribution Unit)</h5>
                     <hr>
                     <form>
                       <div class="form-group">
@@ -172,13 +172,13 @@
                           <h6 *ngIf="custom_rack_rack_pdu"><b>Max Power Supply:</b> {{rack_pdu['max_power_supply'] | number}} Watts</h6>
                           <h6 *ngIf="custom_rack_rack_pdu"><b>Max Power Loss:</b> {{rack_pdu['max_power_loss']}} / 1</h6>
                           <h6 *ngIf="custom_rack_rack_pdu"><b>Max Operating Temperature:</b> {{rack_pdu['max_temp']}}&#8451;</h6>
-                          <h6 *ngIf="custom_rack_rack_pdu"><b>Price:</b> {{rack_pdu['price'] | number}} D$</h6>
+                          <h6 class="price_color" *ngIf="custom_rack_rack_pdu"><b>Price:</b> {{rack_pdu['price'] | number}} D$</h6>
                         </div>
                       </div>
                     </form>
                   </div>
                   <div class="col-4">
-                    <h5>Rack Switch (Networking Equipment)</h5>
+                    <h5 class="heading_color">Rack Switch (Networking Equipment)</h5>
                     <hr>
                     <form>
                       <div class="form-group">
@@ -192,7 +192,7 @@
                           <h6 *ngIf="custom_rack_rack_switch"><b>Max Power Usage:</b> {{rack_switch['max_power_usage'] | number}} Watts</h6>
                           <h6 *ngIf="custom_rack_rack_switch"><b>Max Throughput:</b> {{rack_switch['max_throughput'] | number}} DLOPS</h6>
                           <h6 *ngIf="custom_rack_rack_switch"><b>Max Operating Temperature:</b> {{rack_switch['max_temperature']}}&#8451;</h6>
-                          <h6 *ngIf="custom_rack_rack_switch"><b>Price:</b> {{rack_switch['price'] | number}} D$</h6>
+                          <h6 class="price_color" *ngIf="custom_rack_rack_switch"><b>Price:</b> {{rack_switch['price'] | number}} D$</h6>
                         </div>
                       </div>
                     </form>
@@ -201,20 +201,23 @@
                 <hr>
                 <hr>
                 <div class="row">
-                  <div class="col-4" *ngVar="{rs: rack_switch_by_type(custom_rack_rack_switch), rp: rack_pdu_by_type(custom_rack_rack_pdu)} as pack">
-                    <h5>Summary Information:</h5>
+                  <div class="col-4" *ngVar="{
+                    rs: rack_switch_by_type(custom_rack_rack_switch),
+                    rp: rack_pdu_by_type(custom_rack_rack_pdu)
+                  } as pack">
+                    <h5 class="summary_heading_color">Summary Information:</h5>
                     <hr>
-                    <h6 *ngIf="pack"><b>Max Server Capacity:</b> {{custom_rack_max_server_capacity}}</h6>
-                    <h6 *ngIf="pack"><b>Base Max Power Usage:</b> {{(pack['rp']['max_power_supply'] * pack['rp']['max_power_loss']) + pack['rs']['max_power_usage'] | number}} Watts</h6>
-                    <h6 *ngIf="pack"><b>Base Max Temperature:</b> {{math.max(pack['rp']['max_temp'], pack['rs']['max_temperature'])}}&#8451;</h6>
-                    <h6 *ngIf="pack"><b>Max Power Supply:</b> {{pack['rp']['max_power_supply'] | number}} Watts</h6>
-                    <h6 *ngIf="pack"><b>Max Networking Throughput:</b> {{pack['rs']['max_throughput'] | number}} DLOPS</h6>
-                    <h6 *ngIf="pack"><b>Total Price:</b> {{(500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Max Server Capacity:</b> {{custom_rack_max_server_capacity}}</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Base Max Power Usage:</b> {{(pack['rp']['max_power_supply'] * pack['rp']['max_power_loss']) + pack['rs']['max_power_usage'] | number}} Watts</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Base Max Temperature:</b> {{math.max(pack['rp']['max_temp'], pack['rs']['max_temperature'])}}&#8451;</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Max Power Supply:</b> {{pack['rp']['max_power_supply'] | number}} Watts</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp']"><b>Max Networking Throughput:</b> {{pack['rs']['max_throughput'] | number}} DLOPS</h6>
+                    <h6 class="price_color" *ngIf="pack['rs'] && pack['rp']"><b>Total Price:</b> {{(500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
                   </div>
                   <div class="col-4" *ngVar="{rs: rack_switch_by_type(custom_rack_rack_switch), rp: rack_pdu_by_type(custom_rack_rack_pdu)} as pack">
-                    <h5>Purchase:</h5>
+                    <h5 class="purchase_heading_color">Purchase:</h5>
                     <hr>
-                    <h6 *ngIf="pack && custom_rack_max_server_capacity"><b>Single Unit Price:</b> {{(500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
+                    <h6 *ngIf="pack['rs'] && pack['rp'] && custom_rack_max_server_capacity"><b>Single Unit Price:</b> {{(500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price'] | number}} D$</h6>
                     <form>
                       <div class="form-group">
                         <label for="rackCustomSelect"><b>Quantity:</b></label>
@@ -229,7 +232,7 @@
                         </select>
                       </div>
                       <hr>
-                      <h6 *ngIf="pack && custom_rack_max_server_capacity"><b>Total Price:</b> {{((500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
+                      <h6 class="price_color" *ngIf="pack['rs'] && pack['rp'] && custom_rack_max_server_capacity"><b>Total Price:</b> {{((500 + (custom_rack_max_server_capacity * 150)) + pack['rp']['price'] + pack['rs']['price']) * selected_quantity | number}} D$</h6>
                       <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
                       <br>
                       <button type="submit" (click)="purchaseRack('custom', selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
@@ -249,45 +252,421 @@
             <tabset #tabsServers>
               <tab *ngFor="let s of server_types">
                 <ng-template tabHeading>{{s['type']}}</ng-template>
+                <div class="row">
+                  <div class="col-4">
+                    <h5 class="heading_color">Base Specification</h5>
+                    <hr>
+                    <h6><b>Max CPUs:</b> {{s['max_cpus']}}</h6>
+                    <h6><b>Max Memories:</b> {{s['max_memories']}}</h6>
+                    <h6><b>Max Accelerators:</b> {{s['max_accelerators']}}</h6>
+                    <h6><b>Base Power Usage:</b> {{s['base_power_usage'] | number}} Watts</h6>
+                    <h6 class="price_color"><b>Base Price:</b> {{s['base_price'] | number}} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="cpu_by_type(s['cpus']['type']) as cpu">
+                    <h5 class="heading_color">CPUs (Central Processing Units)</h5>
+                    <hr>
+                    <h6 *ngIf="cpu"><b>Type: </b> {{cpu['type']}}</h6>
+                    <h6 *ngIf="cpu"><b>Cores: </b> {{cpu['cores']}}</h6>
+                    <h6 *ngIf="cpu"><b>Max Frequency: </b> {{cpu['max_freq'] | number}} Mhz</h6>
+                    <h6 *ngIf="cpu"><b>Max Power Usage: </b> {{cpu['max_power_usage'] | number }} Watts</h6>
+                    <h6 *ngIf="cpu"><b>Max Temperature: </b> {{cpu['max_temp']}}&#8451;</h6>
+                    <h6 *ngIf="cpu"><b>Max Ops/s: </b> {{cpu['flops'] | number }} DLOPS</h6>
+                    <hr>
+                    <h6><b>CPU Count:</b> {{s['cpus']['count']}}</h6>
+                    <h6 class="price_color" *ngIf="cpu"><b>Unit Price:  </b>{{cpu['price'] | number}} D$</h6>
+                    <h6 class="price_color" *ngIf="cpu"><b>Total: </b>{{cpu['price'] * s['cpus']['count'] | number}} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="memory_by_type(s['memories']['type']) as mem">
+                    <h5 class="heading_color">Memory Modules (RAM)</h5>
+                    <hr>
+                    <h6 *ngIf="mem"><b>Type: </b> {{mem['type']}}</h6>
+                    <h6 *ngIf="mem"><b>Capacity: </b> {{mem['capacity'] | number}} MB</h6>
+                    <h6 *ngIf="mem"><b>Max Power Usage: </b> {{mem['max_power_usage'] | number }} Watts</h6>
+                    <h6 *ngIf="mem"><b>Max Temperature: </b> {{mem['max_temp']}}&#8451;</h6>
+                    <hr>
+                    <h6><b>Module Count: </b> {{s['memories']['count']}}</h6>
+                    <h6 class="price_color" *ngIf="mem"><b>Unit Price:  </b>{{mem['price'] | number}} D$</h6>
+                    <h6 class="price_color" *ngIf="mem"><b>Total: </b>{{mem['price'] * s['memories']['count'] | number}} D$</h6>
+                  </div>
+                </div>
+                <hr>
+                <hr>
+                <div class="row">
+                  <div class="col-4" *ngIf="s['accelerators']">
+                    <div *ngVar="accelerator_by_type(s['accelerators']['type']) as acc">
+                      <h5 class="heading_color">Accelerators</h5>
+                      <hr>
+                      <h6 *ngIf="acc"><b>Type: </b> {{acc['type']}}</h6>
+                      <h6 *ngIf="acc"><b>Max Ops/s: </b> {{acc['flops'] | number }} DLOPS</h6>
+                      <h6 *ngIf="acc"><b>Max Power Usage: </b> {{acc['max_power_usage'] | number }} Watts</h6>
+                      <h6 *ngIf="acc"><b>Max Temperature: </b> {{acc['max_temp']}}&#8451;</h6>
+                      <hr>
+                      <h6><b>Accelerator Count: </b> {{s['accelerators']['count']}}</h6>
+                      <h6 class="price_color" *ngIf="acc"><b>Unit Price:  </b>{{acc['price'] | number}} D$</h6>
+                      <h6 class="price_color" *ngIf="acc"><b>Total: </b>{{acc['price'] * s['accelerators']['count'] | number}} D$</h6>
+                    </div>
+                  </div>
+                  <div class="col-4" *ngVar="psu_by_type(s['psu']['type']) as psu">
+                    <h5 class="heading_color">Power Supply Unit (PSU)</h5>
+                    <hr>
+                    <h6 *ngIf="psu"><b>Type: </b> {{psu['type']}}</h6>
+                    <h6 *ngIf="psu"><b>Max Power Supply: </b> {{psu['max_power_supply'] | number }} Watts</h6>
+                    <h6 *ngIf="psu"><b>Max Power Loss: </b> {{psu['max_power_loss'] * 100 | number }}%</h6>
+                    <h6 *ngIf="psu"><b>Max Temperature: </b> {{psu['max_temp']}}&#8451;</h6>
+                    <hr>
+                    <h6 class="price_color" *ngIf="psu"><b>Total: </b>{{psu['price'] | number}} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="server_cooling_by_type(s['server_cooling']['type']) as server_cooling">
+                    <h5 class="heading_color">Server Cooling Unit</h5>
+                    <hr>
+                    <h6 *ngIf="server_cooling"><b>Type: </b> {{server_cooling['type']}}</h6>
+                    <h6 *ngIf="server_cooling"><b>Max Power Usage: </b> {{server_cooling['max_power_usage'] | number }} Watts</h6>
+                    <h6 *ngIf="server_cooling"><b>Heat Rejection Ability: </b> {{server_cooling['heat_rejection_ability'] | number}} Watts (Heat) </h6>
+                    <hr>
+                    <h6 class="price_color" *ngIf="server_cooling"><b>Total: </b>{{server_cooling['price'] | number}} D$</h6>
+                  </div>
+                </div>
+                <hr>
+                <hr>
+                <div class="row">
+                  <div class="col-4" *ngVar="{
+                        cpu: cpu_by_type(s['cpus']['type']),
+                        mem: memory_by_type(s['memories']['type']),
+                        acc: accelerator_by_type((s['accelerators'] ? s['accelerators']['type'] : null)), 
+                        psu: psu_by_type(s['psu']['type']),
+                        server_cooling: server_cooling_by_type(s['server_cooling']['type'])
+                      } as pack">
+                    <h5 class="summary_heading_color">Summary Information:</h5>
+                    <hr>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Base Max Power Supply:</b> {{pack['psu']['max_power_supply'] | number}} Watts</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Base Max Power Usage:</b> {{
+                      (pack['cpu']['max_power_usage'] * s['cpus']['count']) +
+                      (pack['mem']['max_power_usage'] * s['memories']['count']) +
+                      (pack['psu']['max_power_supply'] * pack['psu']['max_power_loss']) +
+                      pack['server_cooling']['max_power_usage'] + 
+                      (pack['acc'] ? pack['acc']['max_power_usage'] : 0) * (s['accelerators'] ? s['accelerators']['count'] : 0)
+                    }} Watts</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Base Max Temperature:</b> {{
+                      math.max(
+                        math.max(pack['cpu']['max_temp'], pack['mem']['max_temp']),
+                        math.max((pack['acc'] ? pack['acc']['max_temp'] : 0),  pack['psu']['max_temp'])
+                      )
+                    }}&#8451;</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Total Memory:</b> {{pack['mem']['capacity'] * s['memories']['count'] | number}} MB</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Max Ops/s:</b> {{
+                      (pack['cpu']['flops'] * s['cpus']['count']) +
+                      (pack['acc'] ? (pack['acc']['flops'] * (s['accelerators'] ? s['accelerators']['count'] : 0)) : 0)
+                    | number }} DLOPS</h6>
+                    <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Total Price:</b> {{
+                      s['base_price'] +
+                      (s['cpus']['count'] * pack['cpu']['price']) +
+                      (s['memories']['count'] * pack['mem']['price']) +
+                      pack['psu']['price'] + 
+                      pack['server_cooling']['price'] +
+                      ((pack['acc'] ? pack['acc']['price'] : 0) * (s['accelerators'] ? s['accelerators']['count'] : 0))
+                    | number }} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="{
+                    cpu: cpu_by_type(s['cpus']['type']),
+                    mem: memory_by_type(s['memories']['type']),
+                    acc: accelerator_by_type((s['accelerators'] ? s['accelerators']['type'] : null)), 
+                    psu: psu_by_type(s['psu']['type']),
+                    server_cooling: server_cooling_by_type(s['server_cooling']['type'])
+                  } as pack">
+                    <h5 class="purchase_heading_color">Purchase:</h5>
+                    <hr>
+                    <div *ngVar="
+                    (s['base_price'] +
+                    (s['cpus']['count'] * pack['cpu']['price']) +
+                    (s['memories']['count'] * pack['mem']['price']) +
+                    pack['psu']['price'] + 
+                    pack['server_cooling']['price'] +
+                    ((pack['acc'] ? pack['acc']['price'] : 0) * (s['accelerators'] ? s['accelerators']['count'] : 0))) as single_unit_price
+                    ">
+                      <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Single Unit Price:</b> {{single_unit_price | number }} D$</h6>
+                      <form>
+                        <div class="form-group">
+                          <label for="serverSelect1"><b>Quantity:</b></label>
+                          <select class="form-control form-control-sm" id="serverSelect1" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>25</option>
+                            <option>50</option>
+                            <option>100</option>
+                            <option>500</option>
+                            <option>1000</option>
+                          </select>
+                        </div>
+                        <hr>
+                        <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Total Price:</b> {{single_unit_price * selected_quantity | number}} D$</h6>
+                        <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
+                        <br>
+                        <button type="submit" (click)="purchaseServer(s, selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </tab>
               <tab *ngIf="custom_server_done">
                 <ng-template tabHeading>Custom</ng-template>
+                <div class="row">
+                  <div class="col-4">
+                    <h5 class="heading_color">Base Specification</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group">
+                        <h6><b>Max CPUs:</b></h6>
+                        <select class="form-control form-control-sm" id="serverMaxCpusSelect" [(ngModel)]="custom_server_max_cpus" [ngModelOptions]="{standalone: true}">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <h6><b>Max Memories:</b></h6>
+                        <select class="form-control form-control-sm" id="serverMaxMemoriesSelect" [(ngModel)]="custom_server_max_memories" [ngModelOptions]="{standalone: true}">
+                          <option>2</option>
+                          <option>4</option>
+                          <option>6</option>
+                          <option>8</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <h6><b>Max Accelerators:</b></h6>
+                        <select class="form-control form-control-sm" id="serverMaxAcceleratorsSelect" [(ngModel)]="custom_server_max_accelerators" [ngModelOptions]="{standalone: true}">
+                          <option>0</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>4</option>
+                          <option>6</option>
+                        </select>
+                      </div>
+                    </form>
+                    <h6><b>Base Power Usage:</b> {{
+                      (10 +
+                      (15 * custom_server_max_cpus) +
+                      (5 * custom_server_max_memories) +
+                      (10 * custom_server_max_accelerators))
+                      | number}} Watts</h6>
+
+                    <h6 class="price_color"><b>Base Price:</b> {{
+                      (50 +
+                      (75 * custom_server_max_cpus) +
+                      (75 * custom_server_max_memories) +
+                      (30 * custom_server_max_accelerators))
+                      | number}} D$</h6>
+                  </div>
+                  <div class="col-4">
+                    <h5 class="heading_color">CPUs (Central Processing Units)</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group" *ngVar="cpu_by_type(custom_server_cpu) as cpu">
+                        <h6><b>Type:</b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomCpu" [(ngModel)]="custom_server_cpu" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let c of cpu_types" [value]="c['type']">{{c['type']}}</option>
+                        </select>
+                        <br>
+                        <h6 *ngIf="cpu"><b>Cores:</b> {{cpu['cores']}}</h6>
+                        <h6 *ngIf="cpu"><b>Max Frequency:</b> {{cpu['max_freq'] | number}} Mhz</h6>
+                        <h6 *ngIf="cpu"><b>Max Power Usage:</b> {{cpu['max_power_usage'] | number }} Watts</h6>
+                        <h6 *ngIf="cpu"><b>Max Temperature:</b> {{cpu['max_temp']}}&#8451;</h6>
+                        <h6 *ngIf="cpu"><b>Max Ops/s:</b> {{cpu['flops'] | number }} DLOPS</h6>
+                        <br>
+                        <h6><b>CPU Count:</b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomCpuQuantity" [(ngModel)]="custom_server_cpu_quantity" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let i of range_of(custom_server_max_cpus, 1)" [value]="i">{{i}}</option>
+                        </select>
+                        <hr>
+                        <h6 class="price_color" *ngIf="cpu"><b>Unit Price:  </b>{{cpu['price'] | number}} D$</h6>
+                        <h6 class="price_color" *ngIf="cpu"><b>Total: </b>{{cpu['price'] * custom_server_cpu_quantity | number}} D$</h6>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-4" *ngVar="memory_by_type(custom_server_memory) as mem">
+                    <h5 class="heading_color">Memory Modules (RAM)</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group" *ngVar="memory_by_type(custom_server_memory) as mem">
+                        <h6><b>Type:</b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomMemory" [(ngModel)]="custom_server_memory" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let m of memory_types" [value]="m['type']">{{m['type']}}</option>
+                        </select>
+                        <br>
+                        <h6 *ngIf="mem"><b>Capacity: </b> {{mem['capacity'] | number}} MB</h6>
+                        <h6 *ngIf="mem"><b>Max Power Usage: </b> {{mem['max_power_usage'] | number }} Watts</h6>
+                        <h6 *ngIf="mem"><b>Max Temperature: </b> {{mem['max_temp']}}&#8451;</h6>
+                        <hr>
+                        <h6><b>Module Count: </b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomMemoryQuantity" [(ngModel)]="custom_server_memory_quantity" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let i of range_of(custom_server_max_memories, 1)" [value]="i">{{i}}</option>
+                        </select>
+                        <hr>
+                        <h6 class="price_color" *ngIf="mem"><b>Unit Price:  </b>{{mem['price'] | number}} D$</h6>
+                        <h6 class="price_color" *ngIf="mem"><b>Total: </b>{{mem['price'] * custom_server_memory_quantity | number}} D$</h6>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <hr>
+                <hr>
+                <div class="row">
+                  <div class="col-4" *ngIf="custom_server_max_accelerators > 0">
+                    <h5 class="heading_color">Accelerators</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group" *ngVar="accelerator_by_type(custom_server_accelerator) as acc">
+                        <h6><b>Type:</b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomAccelerator" [(ngModel)]="custom_server_accelerator" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let a of accelerator_types" [value]="a['type']">{{a['type']}}</option>
+                        </select>
+                        <br>
+                        <h6 *ngIf="acc"><b>Max Ops/s: </b> {{acc['flops'] | number }} DLOPS</h6>
+                        <h6 *ngIf="acc"><b>Max Power Usage: </b> {{acc['max_power_usage'] | number }} Watts</h6>
+                        <h6 *ngIf="acc"><b>Max Temperature: </b> {{acc['max_temp']}}&#8451;</h6>
+                        <hr>
+                        <h6><b>Accelerator Count: </b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomAcceleratorQuantity" [(ngModel)]="custom_server_accelerator_quantity" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let i of range_of(custom_server_max_accelerators, 1)" [value]="i">{{i}}</option>
+                        </select>
+                        <hr>
+                        <h6 class="price_color" *ngIf="acc"><b>Unit Price:  </b>{{acc['price'] | number}} D$</h6>
+                        <h6 class="price_color" *ngIf="acc"><b>Total: </b>{{acc['price'] * custom_server_accelerator_quantity | number}} D$</h6>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-4">
+                    <h5 class="heading_color">Power Supply Unit (PSU)</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group" *ngVar="psu_by_type(custom_server_psu) as psu">
+                        <h6><b>Type:</b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomPsu" [(ngModel)]="custom_server_psu" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let a of psu_types" [value]="a['type']">{{a['type']}}</option>
+                        </select>
+                        <br>
+                        <h6 *ngIf="psu"><b>Max Power Supply: </b> {{psu['max_power_supply'] | number }} Watts</h6>
+                        <h6 *ngIf="psu"><b>Max Power Loss: </b> {{psu['max_power_loss'] * 100 | number }}%</h6>
+                        <h6 *ngIf="psu"><b>Max Temperature: </b> {{psu['max_temp']}}&#8451;</h6>
+                        <hr>
+                        <h6 class="price_color" *ngIf="psu"><b>Total:  </b>{{psu['price'] | number}} D$</h6>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-4">
+                    <h5 class="heading_color">Server Cooling Unit</h5>
+                    <hr>
+                    <form>
+                      <div class="form-group" *ngVar="server_cooling_by_type(custom_server_cooling) as server_cooling">
+                        <h6><b>Type:</b></h6>
+                        <select class="form-control form-control-sm" id="serverCustomServerCooling" [(ngModel)]="custom_server_cooling" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let sc of server_cooling_types" [value]="sc['type']">{{sc['type']}}</option>
+                        </select>
+                        <br>
+                        <h6 *ngIf="server_cooling"><b>Max Power Usage: </b> {{server_cooling['max_power_usage'] | number }} Watts</h6>
+                        <h6 *ngIf="server_cooling"><b>Heat Rejection Ability: </b> {{server_cooling['heat_rejection_ability'] | number}} Watts (Heat) </h6>
+                        <hr>
+                        <h6 class="price_color" *ngIf="server_cooling"><b>Total:  </b>{{server_cooling['price'] | number}} D$</h6>
+                      </div>
+                    </form>
+                  </div>
+                </div> 
+                <hr>
+                <hr>
+                <div class="row">
+                  <div class="col-4" *ngVar="{
+                        cpu: cpu_by_type(custom_server_cpu),
+                        mem: memory_by_type(custom_server_memory),
+                        acc: accelerator_by_type((custom_server_max_accelerators > 0 ? custom_server_accelerator : null)), 
+                        psu: psu_by_type(custom_server_psu),
+                        server_cooling: server_cooling_by_type(custom_server_cooling)
+                      } as pack">
+                    <h5 class="summary_heading_color">Summary Information:</h5>
+                    <hr>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Base Max Power Supply:</b> {{pack['psu']['max_power_supply'] | number}} Watts</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Base Max Power Usage:</b> {{
+                      (pack['cpu']['max_power_usage'] * custom_server_cpu_quantity) +
+                      (pack['mem']['max_power_usage'] * custom_server_memory_quantity) +
+                      (pack['psu']['max_power_supply'] * pack['psu']['max_power_loss']) +
+                      pack['server_cooling']['max_power_usage'] + 
+                      (pack['acc'] ? pack['acc']['max_power_usage'] : 0) * (custom_server_max_accelerators > 0 ? custom_server_accelerator_quantity : 0)
+                    }} Watts</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Base Max Temperature:</b> {{
+                      math.max(
+                        math.max(pack['cpu']['max_temp'], pack['mem']['max_temp']),
+                        math.max((pack['acc'] ? pack['acc']['max_temp'] : 0),  pack['psu']['max_temp'])
+                      )
+                    }}&#8451;</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Total Memory:</b> {{pack['mem']['capacity'] * custom_server_memory_quantity | number}} MB</h6>
+                    <h6 *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Max Ops/s:</b> {{
+                      (pack['cpu']['flops'] * custom_server_cpu_quantity) +
+                      (pack['acc'] ? (pack['acc']['flops'] * (custom_server_max_accelerators > 0 ? custom_server_accelerator_quantity : 0)) : 0)
+                    | number }} DLOPS</h6>
+                    <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Total Price:</b> {{
+                      (50 +
+                      (75 * custom_server_max_cpus) +
+                      (75 * custom_server_max_memories) +
+                      (30 * custom_server_max_accelerators)) +
+                      (custom_server_cpu_quantity * pack['cpu']['price']) +
+                      (custom_server_memory_quantity * pack['mem']['price']) +
+                      pack['psu']['price'] + 
+                      pack['server_cooling']['price'] +
+                      ((pack['acc'] ? pack['acc']['price'] : 0) * (custom_server_max_accelerators > 0 ? custom_server_accelerator_quantity : 0))
+                    | number }} D$</h6>
+                  </div>
+                  <div class="col-4" *ngVar="{
+                        cpu: cpu_by_type(custom_server_cpu),
+                        mem: memory_by_type(custom_server_memory),
+                        acc: accelerator_by_type((custom_server_max_accelerators > 0 ? custom_server_accelerator : null)), 
+                        psu: psu_by_type(custom_server_psu),
+                        server_cooling: server_cooling_by_type(custom_server_cooling)
+                      } as pack">
+                    <h5 class="purchase_heading_color">Purchase:</h5>
+                    <hr>
+                    <div *ngVar="
+                    ((50 +
+                    (75 * custom_server_max_cpus) +
+                    (75 * custom_server_max_memories) +
+                    (30 * custom_server_max_accelerators)) +
+                    (custom_server_cpu_quantity * pack['cpu']['price']) +
+                    (custom_server_memory_quantity * pack['mem']['price']) +
+                    pack['psu']['price'] + 
+                    pack['server_cooling']['price'] +
+                    ((pack['acc'] ? pack['acc']['price'] : 0) * (custom_server_max_accelerators > 0 ? custom_server_accelerator_quantity : 0))) as single_unit_price
+                    ">
+                      <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Single Unit Price:</b> {{single_unit_price | number }} D$</h6>
+                      <form>
+                        <div class="form-group">
+                          <label for="serverSelect1"><b>Quantity:</b></label>
+                          <select class="form-control form-control-sm" id="serverSelect1" [(ngModel)]="selected_quantity" [ngModelOptions]="{standalone: true}">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>25</option>
+                            <option>50</option>
+                            <option>100</option>
+                            <option>500</option>
+                            <option>1000</option>
+                          </select>
+                        </div>
+                        <hr>
+                        <h6 class="price_color" *ngIf="pack['cpu'] && pack['mem'] && pack['psu'] && pack['server_cooling']"><b>Total Price:</b> {{single_unit_price * selected_quantity | number}} D$</h6>
+                        <small style="color: red;">Please be advised, you will NOT be asked to confirm your purchase!</small>
+                        <br>
+                        <button type="submit" (click)="purchaseServer('custom', selected_quantity)" class="btn btn-primary btn-square">Purchase</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </tab>
             </tabset>
           </div>
         </div>
       </tab>
     </tabset>
-  </div>
-</div>
-
-<div *ngIf="current_area !== null"  bsModal #area_details_modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><b>{{current_area['name']}}</b></h4>
-        <button type="button" class="close" (click)="area_details_modal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <h4>Details:</h4>
-            <span><b><i class="fa fa-home"></i> Size:</b> {{current_area['square_metres']}}m<sup>2</sup></span><br>
-            <span><b><i class="fa fa-thermometer"></i> Avg. Temp.:</b> {{current_area['average_temperature']}}&#8451;</span><br>
-            <span><b><i class="fa fa-dollar"></i> Price:</b> {{current_area['price'] | number}} D$</span><br>
-          </div>
-          <div class="col-md-6">
-            <h4>Coordinates:</h4>
-            <span *ngFor="let c of current_area['coordinates']" ><b>Lat: </b> {{c[0]}}, <b>Lng: </b> {{c[1]}}<br></span>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="area_details_modal.hide()">Close</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -307,32 +686,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="area_purchase_modal.hide()">Close</button>
         <button type="button" class="btn btn-warning" (click)="purchaseArea(current_area)">Purchase</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="current_building !== null"  bsModal #building_details_modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><b>{{current_building['type']}}</b></h4>
-        <button type="button" class="close" (click)="building_details_modal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <h4>Details:</h4>
-            <span><b><i class="fa fa-home"></i> Size:</b> {{current_building['square_metres']}}m<sup>2</sup></span><br>
-            <span><b><i class="fa fa-home"></i> Max Racks:</b> {{current_building['max_racks']}}</span><br>
-            <span><b><i class="fa fa-dollar"></i> Price:</b> {{current_building['price'] | number}} D$</span><br>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="building_details_modal.hide()">Close</button>
       </div>
     </div>
   </div>

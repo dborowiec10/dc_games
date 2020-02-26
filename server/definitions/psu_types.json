@@ -26,5 +26,12 @@
         "max_power_loss": 0.1,
         "max_temp": 60,
         "price": 200
+    },
+    {
+        "type": "Volta-UltraX",
+        "max_power_supply": 2800,
+        "max_power_loss": 0.10,
+        "max_temp": 70,
+        "price": 400
     }
 ]
