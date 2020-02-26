@@ -15,9 +15,15 @@ class Cpu(object):
         self.temperature = 0
         self.pow_usage = 0
 
-    def set_server(server_id):
+    # sets server for this CPU
+    def set_server(self, server_id):
         self.server_id = server_id
 
+    # unsets server from this CPU
+    def unset_server(self):
+        self.server_id = None
+
+    # serializes this object
     def serialize(self):
         return {
             "id": self.id,

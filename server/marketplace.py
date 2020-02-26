@@ -89,6 +89,27 @@ def buy_server(user: User, server_type, quantity):
     if not company.can_afford(total_price):
         return None, "You do not have enough credits to purchase this item!"
     else:
+        # generate the server
+        server = entity_factory.gen_server(server_type)
+
+        for _ in range(server_type['cpus']['count']):
+            server.add_cpu(entity_factory.gen_cpu(cpu_type))
+
+        for _ in range(server_type['memories']['count']):
+            server.add_memory(entity_factory.gen_memory(mem_type))
+
+        if "accelerators" in server_type:
+            for _ in range(server_type['accelerators']['count']):
+                server.add_accelerator(entity_factory.gen_accelerator(acc_type))
+
+        server.set_psu(entity_factory.gen_psu(psu_type))
+        server.set_server_cooling(entity_factory.gen_server_cooling(server_cooling_type))
+
+        company.deduct_balance(total_price)
+        company.add_to_inventory("servers", server)
+        company.add_to_inventory("cpus", rack_switch_obj)
+        company.add_to_inventory("racks", rack_obj)
+
     
 
 

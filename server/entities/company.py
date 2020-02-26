@@ -12,7 +12,12 @@ class Company(object):
             "racks": [],
             "rack_switches": [],
             "rack_pdus": [],
-            "servers": []
+            "servers": [],
+            "cpus": [],
+            "memories": [],
+            "accelerators": [],
+            "psus": [],
+            "server_coolings": []
         }
         self.datacenters = []
 
@@ -40,6 +45,21 @@ class Company(object):
     # retrieves servers owned by this company
     def get_servers(self):
         return self.inventory["servers"]
+
+    def get_cpus(self):
+        return self.inventory["cpus"]
+
+    def get_memories(self):
+        return self.inventory["memories"]
+
+    def get_accelerators(self):
+        return self.inventory["accelerators"]
+
+    def get_psus(self):
+        return self.inventory["psus"]
+
+    def get_server_coolings(self):
+        return self.inventory["server_coolings"]
 
     # add item to inventory
     def add_to_inventory(self, entity, obj):

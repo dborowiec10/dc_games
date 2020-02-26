@@ -23,6 +23,14 @@ companies = []
 racks = []
 rack_switches = []
 rack_pdus = []
+
+servers = []
+cpus = []
+memories = []
+accelerators = []
+psus = []
+server_coolings = []
+
 buildings = []
 
 # return config value by key
@@ -237,3 +245,27 @@ def add_rack_switch(rack_switch):
 # given a building, inserts it to the store
 def add_building(building):
     buildings.append(building)
+
+# given a server, inserts it to the store
+def add_server(server):
+    servers.append(server)
+
+# given a cpu, inserts it to the store
+def add_cpu(cpu):
+    cpus.append(cpu)
+
+# given a memory, inserts it to the store
+def add_memory(mem):
+    memories.append(mem)
+
+# given an accelerator, inserts it to the store
+def add_accelerator(acc):
+    accelerators.append(acc)
+
+# given a psu, inserts it to the store
+def add_psu(psu):
+    psus.append(psu)
+
+# given a server_cooling, inserts it to the store
+def add_server_cooling(server_cooling):
+    server_coolings.append(server_cooling)
