@@ -156,7 +156,7 @@ def get_building_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(buildings=datastore.building_types), 200
+        return jsonify(building_types=datastore.building_types), 200
 
 
 # endpoint for retrieving rack types

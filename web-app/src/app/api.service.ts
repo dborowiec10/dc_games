@@ -22,6 +22,10 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(environment.apiEndpoint + '/login', {username, password});
+  }
+
   areas(): Observable<any> {
     return this.http.get(environment.apiEndpoint + '/areas', {});
   }

@@ -68,36 +68,6 @@ export const routes: Routes = [
         path: 'datacenters',
         canActivate: [ActivatorService],
         loadChildren: () => import('./views/datacenters/datacenters.module').then(m => m.DatacentersModule)
-      },
-      {
-        path: 'base',
-        canActivate: [ActivatorService],
-        loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
-      },
-      {
-        path: 'buttons',
-        canActivate: [ActivatorService],
-        loadChildren: () => import('./views/buttons/buttons.module').then(m => m.ButtonsModule)
-      },
-      {
-        path: 'charts',
-        canActivate: [ActivatorService],
-        loadChildren: () => import('./views/chartjs/chartjs.module').then(m => m.ChartJSModule)
-      },
-      {
-        path: 'dashboard',
-        canActivate: [ActivatorService],
-        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
-      },
-      {
-        path: 'icons',
-        canActivate: [ActivatorService],
-        loadChildren: () => import('./views/icons/icons.module').then(m => m.IconsModule)
-      },
-      {
-        path: 'notifications',
-        canActivate: [ActivatorService],
-        loadChildren: () => import('./views/notifications/notifications.module').then(m => m.NotificationsModule)
       }
     ]
   },

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { ApiService } from '../../api.service';
 import { filter } from 'rxjs/operators';
+import { StateService } from '../../state.service';
 
 @Component({
   selector: 'app-users',
@@ -13,8 +14,7 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private auth_svc: AuthService,
-    private api_svc: ApiService,
-    private _router: Router
+    private state: StateService
   ){}
 
   currentUser: any;
@@ -31,14 +31,13 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth_svc.getUser().subscribe(res => {
-      this.currentUser = res['user'];
-      this.api_svc.users().subscribe(res => {
-        this.users = res['users'];
-        this.users = this.users.filter(obj => obj['username'] !== 'admin');
-        this.api_svc.companies().subscribe(res => {
-          this.companies = res['companies'];
-        });
+
+    this.currentUser = this.state.user;
+
+    this.state.getUsers(false).subscribe((res) => {
+      this.users = res.filter(obj => obj['username'] !== 'admin');
+      this.state.getCompanies(false).subscribe((res) => {
+        this.companies = res;
       });
     });
   }

@@ -4,7 +4,7 @@ import { AuthService } from '../../auth.service';
 import { ApiService } from '../../api.service';
 import { SocketService } from '../../socket.service';
 import { ToastrService } from 'ngx-toastr';
-import { StateUpdateService } from '../../state-update.service';
+import { StateService } from '../../state.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,20 +18,12 @@ export class DefaultLayoutComponent implements OnInit {
   public currentCompany = null;
   public currentDatetime = null;
 
-  is(thing){
-    if(thing){
-      console.log(thing);
-      return true;
-    }
-    return false;
-  }
-
   constructor(
     private auth_service: AuthService,
     private api_svc: ApiService,
     private socket_service: SocketService,
     private toast: ToastrService,
-    private state: StateUpdateService
+    private state: StateService
 
   ) {}
 
@@ -41,23 +33,27 @@ export class DefaultLayoutComponent implements OnInit {
 
   ngOnInit(){
     this.updateState();
+    
+    this.socket_service.connect(this.currentUser["id"]);
 
     this.socket_service.registerObserver("datetime", (data) => {
       this.currentDatetime = data["datetime"];
     });
 
+    this.socket_service.registerObserver(this.currentUser["id"], (msg) => {
+      // this.toast.success("Successfully connected to the management server!", "Connected!");
+    });
+
+
     this.state.update.subscribe((res) => {
-      this.updateState();
+      if(res === "user"){
+        this.updateState();
+      }
     })
   }
 
   private updateState(){
-    this.auth_service.getUser().subscribe(res => {
-      this.currentUser = res['user'];
-      this.currentCompany = this.currentUser['company'];
-      this.socket_service.registerIdObserver(this.currentUser["id"], (msg) => {
-        this.toast.success("Successfully connected to the management server!", "Connected!");
-      });
-    });
+    this.currentUser = this.state.user;
+    this.currentCompany = this.currentUser['company'];
   }
 }

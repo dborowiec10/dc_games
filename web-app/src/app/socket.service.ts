@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
+import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SocketService {
+    public update = new Subject();
     private url = 'http://localhost:5000';
     private socket = null;
     private observers = [];
@@ -29,6 +31,8 @@ export class SocketService {
                 const o = this.observers.pop();
                 this.socket.on(o["event"], o["obs"]);
             }
+
+            this.update.next(true);
         }
     }
 
@@ -54,25 +58,7 @@ export class SocketService {
     }
 
     public registerObserver(event: string, obs: any){
-        if(!this.isConnected()){
-            this.observers.push({
-                "event": event,
-                "obs": obs
-            });
-        } else {
-            this.socket.on(event, obs);
-        }
-    }
-
-    public registerIdObserver(user_id: string, obs: any){
-        if(!this.isConnected()){
-            this.id_observer = {
-                "event": user_id,
-                "obs": obs
-            };
-        } else {
-            this.socket.on(user_id, obs);
-        }
+        this.socket.on(event, obs);
     }
 
 }

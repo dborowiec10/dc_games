@@ -3,7 +3,7 @@ import { ApiService } from '../../api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { StateUpdateService } from '../../state-update.service';
+import { StateService } from '../../state.service';
 
 @Component({
   selector: 'app-marketplace',
@@ -17,7 +17,7 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
     private _router: Router,
     private _activRoute: ActivatedRoute,
     private toast: ToastrService,
-    private state: StateUpdateService
+    private state: StateService
   ){}
   
   public math = Math;
@@ -178,7 +178,7 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
 
   purchaseArea(area: any){
     this._apiSvc.buy_area(area["id"]).subscribe((res) => {
-      this.state.update.next(true);
+      this.state.update.next("areas");
       if(res["data"]["success"]){
         this.toast.success(res["data"]["success"], "Purchase Successful!", {
           timeOut: 8000
@@ -194,7 +194,7 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
 
   purchaseBuilding(building_type: any){
     this._apiSvc.buy_building(building_type).subscribe((res) => {
-      this.state.update.next(true);
+      this.state.update.next("buildings");
       if(res["data"]["success"]){
         this.toast.success(res["data"]["success"], "Purchase Successful!", {
           timeOut: 8000
@@ -220,7 +220,7 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
       type = rack_type;
     }
     this._apiSvc.buy_rack(type, quantity).subscribe((res) => {
-      this.state.update.next(true);
+      this.state.update.next("racks");
       if(res["data"]["success"]){
         this.toast.success(res["data"]["success"], "Purchase Successful!", {
           timeOut: 8000
@@ -266,7 +266,7 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
       type = server_type;
     }
     this._apiSvc.buy_server(type, parseInt(quantity.toString())).subscribe((res) => {
-      this.state.update.next(true);
+      this.state.update.next("servers");
       if(res["data"]["success"]){
         this.toast.success(res["data"]["success"], "Purchase Successful!", {
           timeOut: 8000
@@ -275,6 +275,16 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
         this.toast.error(res["data"]["error"], "Purchase Unsuccessful!", {
           timeOut: 8000
         });
+      }
+    });
+  }
+
+  loadAreas(){
+    this.state.getAreas(false).subscribe((res) => {
+      for(let a of res){
+        if(a['status'] === 'unpurchased') {
+          this.areas.push(a);
+        }
       }
     });
   }
@@ -289,60 +299,61 @@ export class MarketplaceComponent implements OnInit, AfterViewInit {
       );
     }
 
-    this._apiSvc.areas().subscribe((res) => {
-      for(let a of res['areas']){
-        if(a['status'] === 'unpurchased') {
-          this.areas.push(a);
-        }
+    this.state.update.subscribe((res) => {
+      if(res === "areas_done"){
+        this.areas = [];
+        this.loadAreas();
       }
     });
 
-    this._apiSvc.building_types().subscribe((res) => {
-      this.buildings = res['buildings'];
+    this.loadAreas();
+
+    this.state.getBuildingTypes().subscribe((res) => {
+      this.buildings = res;
     });
 
-    this._apiSvc.rack_switch_types().subscribe((res) => {
-      this.rack_switch_types = res['rack_switch_types'];
+    this.state.getRackSwitchTypes().subscribe((res) => {
+      this.rack_switch_types = res;
       this.custom_rack_rack_switch = this.rack_switch_types[0]['type'];
     });
 
-    this._apiSvc.rack_pdu_types().subscribe((res) => {
-      this.rack_pdu_types = res['rack_pdu_types'];
+    this.state.getRackPduTypes().subscribe((res) => {
+      this.rack_pdu_types = res;
       this.custom_rack_rack_pdu = this.rack_pdu_types[0]['type'];
     });
 
-    this._apiSvc.rack_types().subscribe((res) => {
-      this.rack_types = res['rack_types'];
+    this.state.getRackTypes().subscribe((res) => {
+      this.rack_types = res;
       this.custom_rack_done = true;
     });
 
-    this._apiSvc.accelerator_types().subscribe((res) => {
-      this.accelerator_types = res['accelerator_types'];
+    this.state.getAcceleratorTypes().subscribe((res) => {
+      this.accelerator_types = res;
       this.custom_server_accelerator = this.accelerator_types[0]['type'];
     });
 
-    this._apiSvc.cpu_types().subscribe((res) => {
-      this.cpu_types = res['cpu_types'];
+    this.state.getCpuTypes().subscribe((res) => {
+      this.cpu_types = res;
       this.custom_server_cpu = this.cpu_types[0]['type'];
     });
 
-    this._apiSvc.memory_types().subscribe((res) => {
-      this.memory_types = res['memory_types'];
+    this.state.getMemoryTypes().subscribe((res) => {
+      this.memory_types = res;
       this.custom_server_memory = this.memory_types[0]['type'];
     });
 
-    this._apiSvc.psu_types().subscribe((res) => {
-      this.psu_types = res['psu_types'];
+    this.state.getPsuTypes().subscribe((res) => {
+      this.psu_types = res;
       this.custom_server_psu = this.psu_types[0]['type'];
     });
 
-    this._apiSvc.server_cooling_types().subscribe((res) => {
-      this.server_cooling_types = res['server_cooling_types'];
+    this.state.getServerCoolingTypes().subscribe((res) => {
+      this.server_cooling_types = res;
       this.custom_server_cooling = this.server_cooling_types[0]['type'];
     });
 
-    this._apiSvc.server_types().subscribe((res) => {
-      this.server_types = res['server_types'];
+    this.state.getServerTypes().subscribe((res) => {
+      this.server_types = res;
       this.custom_server_done = true;
     });
   }

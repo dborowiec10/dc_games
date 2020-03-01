@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { ApiService } from '../../api.service';
+import { StateService } from '../../state.service';
 
 @Component({
   selector: 'app-company',
@@ -11,9 +12,7 @@ import { ApiService } from '../../api.service';
 export class CompanyComponent implements OnInit {
 
   constructor(
-    private auth_svc: AuthService,
-    private api_svc: ApiService,
-    private _router: Router,
+    private state: StateService,
     private _activRoute: ActivatedRoute
   ){}
 
@@ -22,19 +21,14 @@ export class CompanyComponent implements OnInit {
   companyUser: any;
 
   ngOnInit() {
-
-    this.auth_svc.getUser().subscribe(res => {
-      this.currentUser = res['user'];
-      this._activRoute.params.subscribe(
-        (params: any) => {
-          this.api_svc.company(params['id']).subscribe(res => {
-            this.currentCompany = res['company'];
-            this.api_svc.user(this.currentCompany['manager_id']).subscribe(res => {
-              this.companyUser = res['user'];
-            });
-          });
-        }
-      );
+    this.currentUser = this.state.user;
+    this._activRoute.params.subscribe((params: any) => {
+      this.state.getCompany(params["id"]).subscribe(res => {
+        this.currentCompany = res;
+        this.state.getUser(this.currentCompany["manager_id"]).subscribe((res) => {
+          this.companyUser = res;
+        });
+      });
     });
   }
 

@@ -4,6 +4,7 @@ import { ApiService } from '../../api.service';
 import { LeafletDirective } from '@asymmetrik/ngx-leaflet';
 import { AreaPopupComponent } from './area-popup.component';
 import { Router, ActivatedRoute } from '@angular/router';
+import { StateService } from '../../state.service';
 
 @Component({
   templateUrl: 'map.component.html',
@@ -29,11 +30,10 @@ export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild(LeafletDirective) map_dir: LeafletDirective;
 
   constructor(
-    public _apiSvc: ApiService,
     private resolver: ComponentFactoryResolver,
     private injector: Injector,
-    private _router: Router,
-    private _activRoute: ActivatedRoute
+    private _activRoute: ActivatedRoute,
+    private state: StateService
   ) {}
 
   isCollapsed = {
@@ -51,7 +51,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   private init_areas() {
-    this._apiSvc.areas().subscribe((res) => {
+    this.state.getAreas(false).subscribe((res) => {
       for (var val of res['areas']) {
         const poly = new L.Polygon(val['coordinates']);
         const factory = this.resolver.resolveComponentFactory(AreaPopupComponent);

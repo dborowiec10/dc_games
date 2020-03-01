@@ -34,9 +34,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.auth_service.login(this.username, this.password).subscribe(res => {
+    this.auth_service.login(this.username, this.password).then(res => {
       this.loggedIn = true;
-      this.loggedInMessage = res['status'];
+      this.loggedInMessage = res["status"];
       (async () => {
         await new Promise( resolve => setTimeout(resolve, 2000) );
         if(this.previousUrl){
