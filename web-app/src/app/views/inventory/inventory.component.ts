@@ -1,15 +1,17 @@
-import { Component, OnInit, ViewChild, AfterViewInit, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, AfterViewInit, AfterContentInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../../api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../auth.service';
 import { StateService } from '../../state.service';
+import { ColumnMode, SortType } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.css']
+  styleUrls: ['./inventory.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class InventoryComponent implements OnInit, OnDestroy {
 
@@ -26,10 +28,18 @@ export class InventoryComponent implements OnInit, OnDestroy {
   
   public math = Math;
   public current_user = null;
-  public areas = [];
-  public buildings = [];
-  public racks = [];
-  public servers = [];
+  public areas = {};
+  public buildings = {};
+  public racks = {};
+  public servers = {};
+
+  ColumnMode = ColumnMode;
+  SortType = SortType;
+
+  @ViewChild('areasTable', { static: false }) areas_table: any;
+  @ViewChild('buildingsTable', { static: false }) buildings_table: any;
+  @ViewChild('racksTable', { static: false }) racks_table: any;
+  @ViewChild('serversTable', { static: false }) servers_table: any;
 
   private tab_id = 'areas';
   
@@ -52,30 +62,49 @@ export class InventoryComponent implements OnInit, OnDestroy {
         this.tabs.tabs[5].active = true;
       }
     })();
+  }
 
+  toggleExpandRowArea(row) {
+    this.areas_table.rowDetail.toggleExpandRow(row);
+  }
+
+  toggleExpandRowBuilding(row) {
+    this.buildings_table.rowDetail.toggleExpandRow(row);
+  }
+
+  toggleExpandRowRack(row) {
+    this.racks_table.rowDetail.toggleExpandRow(row);
+  }
+  
+  toggleExpandRowServer(row) {
+    this.servers_table.rowDetail.toggleExpandRow(row);
   }
 
   loadAreas(){
     this.state.getUserAreas().subscribe((res) => {
       this.areas = res;
+      console.log(this.areas);
     });
   }
 
   loadBuildings(){
     this.state.getBuildings(false).subscribe((res) => {
       this.buildings = res;
+      console.log(this.buildings);
     });
   }
 
   loadRacks(){
     this.state.getRacks(false).subscribe((res) => {
       this.racks = res;
+      console.log(this.racks);
     });
   }
 
   loadServers(){
     this.state.getServers(false).subscribe((res) => {
       this.servers = res;
+      console.log(this.servers)
     });
   }
 
@@ -97,9 +126,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.areas = [];
-    this.buildings = [];
-    this.racks = [];
-    this.servers = [];
+    this.areas = {};
+    this.buildings = {};
+    this.racks = {};
+    this.servers = {};
   }
 }

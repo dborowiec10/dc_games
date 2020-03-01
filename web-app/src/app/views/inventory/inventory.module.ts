@@ -11,6 +11,8 @@ import { InventoryAreasComponent } from './inventory-areas/inventory-areas.compo
 import { InventoryBuildingsComponent } from './inventory-buildings/inventory-buildings.component';
 import { InventoryRacksComponent } from './inventory-racks/inventory-racks.component';
 import { InventoryServersComponent } from './inventory-servers/inventory-servers.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ToNumberPipe } from '../../number.pipe';
 
 @NgModule({
   imports: [
@@ -20,14 +22,16 @@ import { InventoryServersComponent } from './inventory-servers/inventory-servers
     InventoryRoutingModule,
     TabsModule,
     ModalModule.forRoot(),
-    CommonModule
+    CommonModule,
+    NgxDatatableModule
   ],
   declarations: [
     InventoryComponent,
     InventoryAreasComponent,
     InventoryBuildingsComponent,
     InventoryRacksComponent,
-    InventoryServersComponent
+    InventoryServersComponent,
+    ToNumberPipe
   ]
 })
 export class InventoryModule { }

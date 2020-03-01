@@ -52,7 +52,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   private init_areas() {
     this.state.getAreas(false).subscribe((res) => {
-      for (var val of res['areas']) {
+      for (var val of res) {
         const poly = new L.Polygon(val['coordinates']);
         const factory = this.resolver.resolveComponentFactory(AreaPopupComponent);
         const component = factory.create(this.injector);

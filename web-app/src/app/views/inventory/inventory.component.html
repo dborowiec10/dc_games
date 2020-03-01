@@ -3,103 +3,440 @@
     <tabset #tabs>
       <tab>
         <ng-template tabHeading><i class="icon-calculator"></i> Areas</ng-template>
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Avg. Temp.</th>
-                  <th>Sq. Metres</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody >
-                  <tr *ngFor="let a of areas" [id]="a['id']" tabindex="0">
-                    <td><a [routerLink]="['/inventory/areas', a['id']]">{{a['name']}}</a></td>
-                    <td>{{a['average_temperature']}}&#8451;</td>
-                    <td>{{a['square_metres']}}m<sup>2</sup></td>
-                    <td><button type="button" (click)="viewArea(a)" class="btn btn-success btn-sm"><span class="cui-magnifying-glass"></span> Map</button></td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+          <ngx-datatable
+            #areasTable
+            class="material striped expandable"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [rowHeight]="50"
+            [rows]="areas"
+            [limit]="10"
+          >
+          <ngx-datatable-row-detail rowHeight="240" #areasDetailRow>
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                  <div class="row" style="width: 100%; padding: 10px;">
+                    <div class="col-3">
+                      <h5><b>Details: </b></h5>
+                      <hr>
+                      <span><b>ID:</b> {{row['id']}}</span>
+                      <br>
+                      <span><b>Square Metres:</b> {{row['square_metres']}}m<sup>2</sup></span>
+                      <br>
+                      <span><b>Average Temperature:</b> {{row['average_temperature']}}&#8451;</span>
+                    </div>
+                    <div class="col-5">
+                      <h5><b>Coordinates: </b></h5>
+                      <hr>
+                      <div class="row">
+                        <div class="col-6" *ngFor="let c of row['coordinates']">
+                          <b>Lat: </b>{{c[0]}}  <b>Lng: </b>{{c[1]}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <h5><b>Buildings: </b></h5>
+                      <hr>
+                    </div>
+                    <div class="col-12">
+                      <hr>
+                      <button type="button" (click)="viewArea(row)"  class="btn btn-success"><span class="cui-magnifying-glass"></span> Map</button>
+                      <hr>
+                    </div>
+                  </div>
+            </ng-template>
+          </ngx-datatable-row-detail>
+          <ngx-datatable-column
+            [width]="50"
+            [resizeable]="false"
+            [sortable]="false"
+            [draggable]="false"
+            [canAutoResize]="false"
+          >
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+              <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" (click)="toggleExpandRowArea(row)"></a>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="ID" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['id']}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Name" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['name']}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Square Metres" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['square_metres']}}m<sup>2</sup>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Average Temperature" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['average_temperature']}}&#8451;
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Status" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['status']}}
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
       </tab>
 
       <tab>
         <ng-template tabHeading><i class="icon-calculator"></i> Buildings</ng-template>
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-striped table-sm" *ngIf="buildings">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Type</th>
-                  <th>Sq. Metres</th>
-                  <th>Racks</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr *ngFor="let b of buildings" [id]="b['id']" tabindex="0">
-                    <td><a [routerLink]="['/inventory/buildings', b['id']]">{{b['id']}}</a></td>
-                    <td>{{b['type']}}</td>
-                    <td>{{b['square_metres']}}m<sup>2</sup></td>
-                    <td>{{b['racks']}}/{{b['max_racks']}}</td>
-                    <td></td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+          <ngx-datatable
+            #buildingsTable
+            class="material expandable"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [rowHeight]="50"
+            [rows]="buildings"
+            [limit]="10"
+          >
+          <ngx-datatable-row-detail rowHeight="260" #buildingsDetailsRow>
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                <div class="row" style="width: 100%; padding: 10px;">
+                  <div class="col-4">
+                    <h5><b>Details: </b></h5>
+                    <hr>
+                    <span><b>ID:</b> {{row['id']}}</span>
+                    <br>
+                    <span><b>Type:</b> {{row['type']}}</span>
+                    <br>
+                    <span><b>Square Metres:</b> {{row['square_metres']}}m<sup>2</sup></span>
+                    <br>
+                    <span><b>Max Racks:</b> {{row['max_racks']}}</span>
+                    <br>
+                    <span><b>Resides on (Area):</b> {{row['area_id']}}</span>
+                  </div>
+                  <div class="col-8">
+                    <h5><b>Racks: </b></h5>
+                    <hr>
+                  </div>
+                  <div class="col-12">
+                    <hr>
+                    <button type="button"  class="btn btn-success"><span class="cui-magnifying-glass"></span> Action</button>
+                    <hr>
+                  </div>
+                </div>
+            </ng-template>
+          </ngx-datatable-row-detail>
+          <ngx-datatable-column
+            [width]="50"
+            [resizeable]="false"
+            [sortable]="false"
+            [draggable]="false"
+            [canAutoResize]="false"
+          >
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+              <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" (click)="toggleExpandRowBuilding(row)"></a>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="ID" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['id']}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Type" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['type']}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Square Metres" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['square_metres']}}m<sup>2</sup>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Max Racks" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['max_racks']}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Area" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['area_id']}}
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
       </tab>
 
       <tab>
         <ng-template tabHeading><i class="icon-calculator"></i> Racks</ng-template>
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Type</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr *ngFor="let r of racks" [id]="r['id']" tabindex="0">
-                    <td><a [routerLink]="['/inventory/racks', r['id']]">{{r['id']}}</a></td>
-                    <td>{{r['type']}}</td>
-                    <td></td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+          <ngx-datatable
+            #racksTable 
+            class="material expandable"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [rowHeight]="50"
+            [rows]="racks"
+            [limit]="10"
+          >
+          <ngx-datatable-row-detail rowHeight="450" #racksDetailsRow>
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                <div class="row" style="width: 90%; padding: 10px;">
+                  <div class="col-4">
+                    <h5><b>Details: </b></h5>
+                    <hr>
+                    <span><b>ID:</b> {{row['id']}}</span>
+                    <br>
+                    <span><b>Type:</b> {{row['type']}}</span>
+                    <br>
+                    <span><b>Server Capacity:</b> {{row['server_capacity']}} / {{row['max_server_capacity']}}</span>
+                    <br>
+                    <span><b>Resides in (Building):</b> {{row['building_id']}}</span>
+                  </div>
+                  <div class="col-8">
+                    <h5><b>Servers: </b></h5>
+                    <hr>
+                  </div>
+                  <div class="col-12">
+                    <hr>
+                  </div>
+                  <div class="col-6">
+                    <h5><b>Rack Switch: </b></h5>
+                    <hr>
+                    <span><b>ID:</b> {{row['rack_switch']['id']}}</span>
+                    <br>
+                    <span><b>Type:</b> {{row['rack_switch']['type']}}</span>
+                    <br>
+                    <span><b>Max Power Usage:</b> {{row['rack_switch']['max_power_usage'] | toNumber | number}} Watts</span>
+                    <br>
+                    <span><b>Max Temperature:</b> {{row['rack_switch']['max_temp'] | toNumber | number}}&#8451;</span>
+                    <br>
+                    <span><b>Max Netw. Throughput:</b> {{row['rack_switch']['max_throughput'] | toNumber | number}} DLOPS</span>
+                  </div>
+                  <div class="col-6">
+                    <h5><b>Rack PDU: </b></h5>
+                    <hr>
+                    <span><b>ID:</b> {{row['rack_pdu']['id']}}</span>
+                    <br>
+                    <span><b>Type:</b> {{row['rack_pdu']['type']}}</span>
+                    <br>
+                    <span><b>Max Power Supply:</b> {{row['rack_pdu']['max_power_supply'] | toNumber | number}} Watts</span>
+                    <br>
+                    <span><b>Max Power Loss:</b> {{row['rack_pdu']['max_power_loss'] | toNumber | number}}</span>
+                    <br>
+                    <span><b>Max Temperature:</b> {{row['rack_pdu']['max_temp'] | toNumber | number}}&#8451;</span>
+                  </div>
+                  <div class="col-12">
+                    <hr>
+                    <button type="button"  class="btn btn-success"><span class="cui-magnifying-glass"></span> Action</button>
+                    <hr>
+                  </div>
+                </div>
+            </ng-template>
+          </ngx-datatable-row-detail>
+          <ngx-datatable-column
+            [width]="50"
+            [resizeable]="false"
+            [sortable]="false"
+            [draggable]="false"
+            [canAutoResize]="false"
+          >
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+              <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" (click)="toggleExpandRowRack(row)"></a>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="ID" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['id']}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Type" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['type']}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Server Capacity" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['server_capacity']}} / {{row['max_server_capacity']}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Building" width="300">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row['building_id']}}
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>        
       </tab>
+
+
       <tab>
         <ng-template tabHeading><i class="icon-calculator"></i> Servers</ng-template>
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Type</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr *ngFor="let s of servers" [id]="s['id']" tabindex="0">
-                    <td><a [routerLink]="['/inventory/servers', s['id']]">{{s['id']}}</a></td>
-                    <td>{{s['type']}}</td>
-                    <td></td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <ngx-datatable
+          #serversTable 
+          class="material expandable"
+          [columnMode]="ColumnMode.force"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [rowHeight]="50"
+          [rows]="servers"
+          [limit]="10"
+        >
+        <ngx-datatable-row-detail rowHeight="550" #serverDetailsRow>
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+              <div class="row" style="width: 90%; padding: 10px;">
+                <div class="col-4">
+                  <h5><b>Details: </b></h5>
+                  <hr>
+                  <span><b>ID:</b> {{row['id']}}</span>
+                  <br>
+                  <span><b>Type:</b> {{row['type']}}</span>
+                  <br>
+                  <span><b>Base Power Usage:</b> {{row['base_power_usage'] | toNumber | number}} Watts</span>
+                  <br>
+                  <span><b>CPUs:</b> {{row['cpus'].length}} / {{row['max_cpus']}}</span>
+                  <br>
+                  <span><b>Memories:</b> {{row['memories'].length}} / {{row['max_memories']}}</span>
+                  <br>
+                  <span><b>Accelerators:</b> {{row['accelerators'].length}} / {{row['max_accelerators']}}</span>
+                </div>
+                <div class="col-4">
+                  <h5><b>CPUs: </b></h5>
+                  <hr>
+                  <span><b>Quantity:</b> {{row['cpus'].length}}</span>
+                  <br>
+                  <span><b>Type:</b>  {{row['cpus'][0]['type']}}</span>
+                  <br>
+                  <span><b>Cores:</b> {{row['cpus'][0]['cores']}}</span>
+                  <br>
+                  <span><b>Max Power Usage:</b> {{row['cpus'][0]['max_power_usage'] | toNumber | number}} Watts</span>
+                  <br>
+                  <span><b>Max Frequency:</b> {{row['cpus'][0]['max_frequency'] | toNumber | number}} MHz</span>
+                  <br>
+                  <span><b>Max Temperature:</b> {{row['cpus'][0]['max_temperature'] | toNumber | number}} &#8451;</span>
+                  <br>
+                  <span><b>Operations/s:</b> {{row['cpus'][0]['flops'] | toNumber | number}} DLOPS</span>              
+                </div>
+                <div class="col-4">
+                  <h5><b>Memories: </b></h5>
+                  <hr>
+                  <span><b>Quantity:</b> {{row['memories'].length}}</span>
+                  <br>
+                  <span><b>Type:</b>  {{row['memories'][0]['type']}}</span>
+                  <br>
+                  <span><b>Max Capacity:</b> {{row['memories'][0]['max_capacity'] | toNumber | number}} MB</span>
+                  <br>
+                  <span><b>Max Power Usage:</b> {{row['memories'][0]['max_power_usage'] | toNumber | number}} Watts</span>
+                  <br>
+                  <span><b>Max Temperature:</b> {{row['memories'][0]['max_temperature'] | toNumber | number}} &#8451;</span>
+                </div>
+                <div class="col-12">
+                  <hr>
+                </div>
+                <div class="col-4">
+                  <h5><b>Accelerators: </b></h5>
+                  <hr>
+                  <span><b>Quantity:</b> {{row['accelerators'].length}}</span>
+                  <div *ngIf="row['accelerators'].length > 0">
+                    <br>
+                    <span><b>Type:</b>  {{row['accelerators'][0]['type']}}</span>
+                    <br>
+                    <span><b>Operations/s:</b> {{row['accelerators'][0]['flops'] | toNumber | number}} DLOPS</span>   
+                    <br>
+                    <span><b>Max Power Usage:</b> {{row['accelerators'][0]['max_power_usage'] | toNumber | number}} Watts</span>
+                    <br>
+                    <span><b>Max Temperature:</b> {{row['accelerators'][0]['max_temperature'] | toNumber | number}} &#8451;</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <h5><b>PSU: </b></h5>
+                  <hr>
+                  <span><b>Type:</b>  {{row['psu']['type']}}</span>
+                  <br>
+                  <span><b>Max Power Supply:</b> {{row['psu']['max_power_supply'] | toNumber | number}} Watts</span>
+                  <br>
+                  <span><b>Max Temperature:</b> {{row['psu']['max_temp'] | toNumber | number}} &#8451;</span>
+                  <br>
+                  <span><b>Power Loss:</b> {{row['psu']['power_loss'] | toNumber | number}}</span>
+                </div>
+                <div class="col-4">
+                  <h5><b>Server Cooling: </b></h5>
+                  <hr>
+                  <span><b>Heat Rejection Ability:</b> {{row['server_cooling']['heat_rejection_ability'] | toNumber | number}} Heat Watts</span>
+                  <br>
+                  <span><b>Max Power Usage:</b> {{row['server_cooling']['max_power_usage'] | toNumber | number}} Watts</span>
+                </div>
+                <div class="col-12">
+                  <hr>
+                  <button type="button"  class="btn btn-success"><span class="cui-magnifying-glass"></span> Action</button>
+                  <hr>
+                </div>
+              </div>
+          </ng-template>
+        </ngx-datatable-row-detail>
+        <ngx-datatable-column
+          [width]="50"
+          [resizeable]="false"
+          [sortable]="false"
+          [draggable]="false"
+          [canAutoResize]="false"
+        >
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" (click)="toggleExpandRowServer(row)"></a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="ID" width="300">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['id']}}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Type" width="300">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['type']}}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Base Power Usage" width="300">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['base_power_usage'] | toNumber | number}} Watts
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="CPUs" width="300">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['cpus'].length}} / {{row['max_cpus']}}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Memories" width="300">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['memories'].length}} / {{row['max_memories']}}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Accelerators" width="300">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['accelerators'].length}} / {{row['max_accelerators']}}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Rack" width="300">
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            {{row['rack_id']}}
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>          
       </tab>
     </tabset>
   </div>

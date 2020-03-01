@@ -41,6 +41,7 @@ import { ActivatorService } from './activator-service';
 import { SocketService } from './socket.service';
 import { StateService } from './state.service';
 import { ToastrModule } from 'ngx-toastr';
+import { ToNumberPipe } from './number.pipe';
 
 @NgModule({
   imports: [

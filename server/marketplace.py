@@ -56,13 +56,13 @@ def buy_rack(user: User, rack_type, quantity):
             if rack_pdu_obj == None or rack_switch_obj == None or rack_obj == None:
                 return None, "Unable to produce new Rack!"
             else:
-                company.deduct_balance(total_price)
                 company.add_to_inventory("rack_pdus", rack_pdu_obj)
                 company.add_to_inventory("rack_switches", rack_switch_obj)
                 company.add_to_inventory("racks", rack_obj)
                 datastore.add_rack_pdu(rack_pdu_obj)
                 datastore.add_rack_switch(rack_switch)
                 datastore.add_rack(rack_obj)
+        company.deduct_balance(total_price)
         return "Purchased Rack(s), should appear in inventory shortly!", None
 
 
@@ -72,9 +72,6 @@ def buy_server(user: User, server_type, quantity):
     base_price = server_type['base_price']
     total_price = base_price
     cpu_type = datastore.find_cpu_type(server_type['cpus']['type'])
-    print(cpu_type)
-    print(server_type)
-    print(quantity)
     total_price = total_price + (cpu_type['price'] * server_type['cpus']['count'])
     mem_type = datastore.find_memory_type(server_type['memories']['type'])
     total_price = total_price + (mem_type['price'] * server_type['memories']['count'])
@@ -86,37 +83,37 @@ def buy_server(user: User, server_type, quantity):
     server_cooling_type = datastore.find_server_cooling_type(server_type['server_cooling']['type'])
     total_price = total_price + server_cooling_type['price']
     total_price = total_price * quantity
-    print(total_price)
     if not company.can_afford(total_price):
         return None, "You do not have enough credits to purchase this item!"
     else:
         # generate the server
-        server = entity_factory.gen_server(server_type)
-        datastore.add_server(server)
-        company.add_to_inventory("servers", server)
-        psu = entity_factory.gen_psu(psu_type)
-        server.set_psu(psu)
-        datastore.add_psu(psu)
-        company.add_to_inventory("psus", psu)
-        server_cooling = entity_factory.gen_server_cooling(server_cooling_type)
-        server.set_server_cooling(server_cooling)
-        datastore.add_server_cooling(server_cooling)
-        company.add_to_inventory("server_coolings", server_cooling)
-        for _ in range(server_type['cpus']['count']):
-            c = entity_factory.gen_cpu(cpu_type)
-            company.add_to_inventory("cpus", c)
-            datastore.add_cpu(c)
-            server.add_cpu(c)
-        for _ in range(server_type['memories']['count']):
-            m = entity_factory.gen_memory(mem_type)
-            company.add_to_inventory("memories", m)
-            datastore.add_memory(m)
-            server.add_memory(m)
-        if "accelerators" in server_type:
-            for _ in range(server_type['accelerators']['count']):
-                a = entity_factory.gen_accelerator(acc_type)
-                company.add_to_inventory("accelerators", a)
-                datastore.add_accelerator(a)
-                server.add_accelerator(a)
+        for i in range(int(quantity)):
+            server = entity_factory.gen_server(server_type)
+            datastore.add_server(server)
+            company.add_to_inventory("servers", server)
+            psu = entity_factory.gen_psu(psu_type)
+            server.set_psu(psu)
+            datastore.add_psu(psu)
+            company.add_to_inventory("psus", psu)
+            server_cooling = entity_factory.gen_server_cooling(server_cooling_type)
+            server.set_server_cooling(server_cooling)
+            datastore.add_server_cooling(server_cooling)
+            company.add_to_inventory("server_coolings", server_cooling)
+            for _ in range(server_type['cpus']['count']):
+                c = entity_factory.gen_cpu(cpu_type)
+                company.add_to_inventory("cpus", c)
+                datastore.add_cpu(c)
+                server.add_cpu(c)
+            for _ in range(server_type['memories']['count']):
+                m = entity_factory.gen_memory(mem_type)
+                company.add_to_inventory("memories", m)
+                datastore.add_memory(m)
+                server.add_memory(m)
+            if "accelerators" in server_type:
+                for _ in range(server_type['accelerators']['count']):
+                    a = entity_factory.gen_accelerator(acc_type)
+                    company.add_to_inventory("accelerators", a)
+                    datastore.add_accelerator(a)
+                    server.add_accelerator(a)
         company.deduct_balance(total_price)
         return "Purchased Server(s), should appear in inventory shortly!", None

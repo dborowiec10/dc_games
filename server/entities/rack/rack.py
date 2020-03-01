@@ -8,12 +8,14 @@ class Rack(object):
         self.rack_pdu = rack_pdu
         self.rack_switch = rack_switch
         self.datacenter_id = None
+        self.building_id = None
         self.servers = []
 
     def serialize(self):
         return {
             "id": self.id,
             "type": self.type,
+            "building_id": self.building_id,
             "datacenter_id": self.datacenter_id,
             "max_server_capacity": self.max_server_capacity,
             "server_capacity": len(self.servers),
