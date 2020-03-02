@@ -129,7 +129,7 @@ def get_areas():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(areas=[a.serialize() for a in datastore.areas]), 200
+        return jsonify(areas=[a.serialize() for a in datastore.get_areas()]), 200
 
 
 # endpoint for retrieving areas owned by specific company
@@ -156,7 +156,7 @@ def get_building_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(building_types=datastore.building_types), 200
+        return jsonify(building_types=datastore.get_building_types()), 200
 
 
 # endpoint for retrieving rack types
@@ -167,7 +167,7 @@ def get_rack_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(rack_types=datastore.rack_types), 200
+        return jsonify(rack_types=datastore.get_rack_types()), 200
 
 
 # endpoint for retrieving rack switch types
@@ -178,7 +178,7 @@ def get_rack_switch_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(rack_switch_types=datastore.rack_switch_types), 200
+        return jsonify(rack_switch_types=datastore.get_rack_switch_types()), 200
 
 # endpoint for retrieving rack pdu types
 @app.route('/rack_pdu_types', methods=['GET'])
@@ -188,7 +188,7 @@ def get_rack_pdu_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(rack_pdu_types=datastore.rack_pdu_types), 200
+        return jsonify(rack_pdu_types=datastore.get_rack_pdu_types()), 200
 
 # endpoint for retrieving accelerator types
 @app.route('/accelerator_types', methods=['GET'])
@@ -198,7 +198,7 @@ def get_accelerator_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(accelerator_types=datastore.accelerator_types), 200
+        return jsonify(accelerator_types=datastore.get_accelerator_types()), 200
 
 # endpoint for retrieving cpu types
 @app.route('/cpu_types', methods=['GET'])
@@ -208,7 +208,7 @@ def get_cpu_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(cpu_types=datastore.cpu_types), 200
+        return jsonify(cpu_types=datastore.get_cpu_types()), 200
 
 # endpoint for retrieving memory types
 @app.route('/memory_types', methods=['GET'])
@@ -218,7 +218,7 @@ def get_memory_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(memory_types=datastore.memory_types), 200
+        return jsonify(memory_types=datastore.get_memory_types()), 200
 
 
 # endpoint for retrieving psu types
@@ -229,7 +229,7 @@ def get_psu_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(psu_types=datastore.psu_types), 200
+        return jsonify(psu_types=datastore.get_psu_types()), 200
 
 # endpoint for retrieving server cooling types
 @app.route('/server_cooling_types', methods=['GET'])
@@ -239,7 +239,7 @@ def get_server_cooling_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(server_cooling_types=datastore.server_cooling_types), 200
+        return jsonify(server_cooling_types=datastore.get_server_cooling_types()), 200
 
 
 # endpoint for retrieving server types
@@ -250,7 +250,7 @@ def get_server_types():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(server_types=datastore.server_types), 200
+        return jsonify(server_types=datastore.get_server_types()), 200
         
 
 # endpoint for retrieving companies
@@ -261,7 +261,7 @@ def get_companies():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(companies=[c.serialize() for c in datastore.companies]), 200
+        return jsonify(companies=[c.serialize() for c in datastore.get_companies()]), 200
 
 
 # endpoint for retrieving a specific company
@@ -272,11 +272,12 @@ def get_company(id):
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        for c in datastore.companies:
-            if c.id == id:
-                return jsonify(company=c.serialize()), 200
-        return jsonify(data={"error": "Company not found!"}), 200
-
+        comp = datastore.find_company_by_id(id)
+        if comp == None:
+            return jsonify(data={"error": "Company not found!"}), 200
+        else:
+            return jsonify(company=comp), 200
+                
 
 # endpoint for retrieving users
 @app.route('/users', methods=['GET'])
@@ -286,7 +287,7 @@ def get_users():
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        return jsonify(users=[u.serialize() for u in datastore.users]), 200
+        return jsonify(users=[u.serialize() for u in datastore.get_users()]), 200
 
 
 # endpoint for retrieving a specific user
@@ -297,10 +298,11 @@ def get_user(id):
     if user == None:
         return jsonify(data={"error": "Unauthorized!"}), 401
     else:
-        for u in datastore.users:
-            if u.id == id:
-                return jsonify(user=u.serialize()), 200
-        return jsonify(data={"error": "User not found!"}), 200 
+        usr = datastore.find_user_by_id(id)
+        if usr == None:
+            return jsonify(data={"error": "User not found!"}), 200 
+        else:
+            return jsonify(user=usr), 200        
 
 
 # endpoint for buying areas
